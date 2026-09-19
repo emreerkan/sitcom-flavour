@@ -19,7 +19,7 @@
 ### Giving up on tooling
 - *throws the computer in a dumpster* (Ron)
 
-### Frustrated user
+### Harsh code review feedback
 - "What I hear when I'm being yelled at is people caring loudly at me." (Leslie)
 
 ### Priorities
