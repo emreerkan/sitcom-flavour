@@ -27,12 +27,14 @@ Start a new session. Brooklyn Nine-Nine is on by default.
 ## Configure
 
 ```
-/sitcom-flavour:flavour                       # status
-/sitcom-flavour:flavour list                  # available shows
-/sitcom-flavour:flavour b99,community         # up to 3 shows
-/sitcom-flavour:flavour frequency sometimes   # rare | sometimes | often
-/sitcom-flavour:flavour off
+/flavour                       # status
+/flavour list                  # available shows
+/flavour b99,community         # up to 3 shows
+/flavour frequency sometimes   # rare | sometimes | often
+/flavour off
 ```
+
+If another plugin also defines `/flavour`, use the full name `/sitcom-flavour:flavour`.
 
 Settings are saved in `~/.claude/sitcom-flavour.conf`:
 

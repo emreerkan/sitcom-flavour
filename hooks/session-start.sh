@@ -36,7 +36,7 @@ case "$frequency" in
              freq_rule="Sparingly: only when a line actually lands, never as a habit." ;;
 esac
 
-footer="Plugin: sitcom-flavour. Banks directory: $BANKS_DIR. Available shows: $available. Config file: $CONF. The /sitcom-flavour:flavour command changes shows and frequency."
+footer="Plugin: sitcom-flavour. Banks directory: $BANKS_DIR. Available shows: $available. Config file: $CONF. The /flavour command (full name /sitcom-flavour:flavour) changes shows and frequency."
 
 if [ "$shows" = "off" ]; then
   context="<sitcom-flavour>

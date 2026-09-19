@@ -1,6 +1,8 @@
 ---
+name: flavour
 description: Pick sitcom-flavour shows and frequency, or turn it off
 argument-hint: "[status | list | off | <show,show,...> | frequency <rare|sometimes|often>]"
+disable-model-invocation: true
 ---
 
 Manage the sitcom-flavour plugin. The config file path, banks directory and available shows are in the `<sitcom-flavour>` block injected at session start. If that block is missing, the plugin's SessionStart hook didn't run: say so and stop.
