@@ -8,7 +8,6 @@
     {
       "name": "sitcom-flavour",
       "description": "Seasons Claude's replies with situation-matched sitcom lines.",
-      "version": "0.1.0",
       "source": "./",
       "author": {
         "name": "Emre Erkan"
