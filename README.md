@@ -45,9 +45,13 @@ frequency=rare
 
 The environment variables `SITCOM_FLAVOUR_SHOWS` and `SITCOM_FLAVOUR_FREQUENCY` override the file, which is handy for per-project settings via `.claude/settings.json` → `env`.
 
+## Personal banks
+
+Put your own lines in `~/.claude/sitcom-flavour/banks/<show>.md`, using the same format as the plugin banks. A file named after a bundled show (`b99.md`) is appended to that bank. Any other name adds a new show you can select with `/flavour`. Personal banks are never published, so they're the place for lines that are too spicy for the shared banks.
+
 ## How it works
 
-A `SessionStart` hook reads the config and injects the selected banks as context at startup, on `/clear` and after compaction. There's no MCP server and no network access. It needs only bash.
+A `SessionStart` hook reads the config and injects the selected banks as context at startup, on resume, on `/clear` and after compaction. There's no MCP server and no network access. It needs only bash.
 
 At most 3 shows load at once, so the token cost stays small (roughly 300–500 tokens per show).
 

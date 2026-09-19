@@ -11,7 +11,6 @@
 - "I have no idea what I'm doing, but I know I'm doing it really, really well." (Andy)
 
 ### Overengineering, scope creep
-- "Never half-ass two things. Whole-ass one thing." (Ron)
 - *The Cones of Dunshire* (Ben), for a system only its author understands
 
 ### Overhyped tool or startup

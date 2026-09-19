@@ -34,6 +34,3 @@
 
 ### Absurd situation
 - *looks directly into the camera* (Jim)
-
-### Accidental innuendo
-- "That's what she said." (Michael)

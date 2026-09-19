@@ -5,12 +5,16 @@
 #   env  SITCOM_FLAVOUR_SHOWS=b99,the-office   SITCOM_FLAVOUR_FREQUENCY=rare|sometimes|often
 #   file ${CLAUDE_CONFIG_DIR:-~/.claude}/sitcom-flavour.conf   (shows=..., frequency=...)
 #   default shows=b99 frequency=rare
+#
+# Personal banks in ${CLAUDE_CONFIG_DIR:-~/.claude}/sitcom-flavour/banks/<slug>.md
+# extend the plugin bank of the same name, or add a new show.
 
 set -uo pipefail
 
 PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}"
 BANKS_DIR="$PLUGIN_ROOT/banks"
 CONF="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/sitcom-flavour.conf"
+USER_BANKS_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/sitcom-flavour/banks"
 MAX_SHOWS=3
 
 conf_get() {
@@ -23,11 +27,11 @@ frequency="${SITCOM_FLAVOUR_FREQUENCY:-$(conf_get frequency)}"
 shows="${shows:-b99}"
 frequency="${frequency:-rare}"
 
-available=""
-for f in "$BANKS_DIR"/*.md; do
-  [ -e "$f" ] || continue
-  available="${available:+$available, }$(basename "$f" .md)"
-done
+available=$(
+  for f in "$BANKS_DIR"/*.md "$USER_BANKS_DIR"/*.md; do
+    [ -e "$f" ] && basename "$f" .md
+  done | sort -u | paste -sd, - | sed 's/,/, /g'
+)
 
 case "$frequency" in
   often)     freq_rule="Drop a line in most replies where one genuinely fits." ;;
@@ -36,7 +40,7 @@ case "$frequency" in
              freq_rule="Sparingly: only when a line actually lands, never as a habit." ;;
 esac
 
-footer="Plugin: sitcom-flavour. Banks directory: $BANKS_DIR. Available shows: $available. Config file: $CONF. The /flavour command (full name /sitcom-flavour:flavour) changes shows and frequency."
+footer="Plugin: sitcom-flavour. Banks directory: $BANKS_DIR. Personal banks directory: $USER_BANKS_DIR (a file there extends the plugin bank of the same name, or adds a new show). Available shows: $available. Config file: $CONF. The /flavour command (full name /sitcom-flavour:flavour) changes shows and frequency."
 
 if [ "$shows" = "off" ]; then
   context="<sitcom-flavour>
@@ -51,10 +55,14 @@ else
   for slug in "${requested[@]}"; do
     # Slugs map to filenames, so only allow a safe charset.
     [[ "$slug" =~ ^[a-z0-9-]+$ ]] || continue
-    [ -f "$BANKS_DIR/$slug.md" ] || continue
+    bank=""
+    [ -f "$BANKS_DIR/$slug.md" ] && bank=$(cat "$BANKS_DIR/$slug.md")
+    [ -f "$USER_BANKS_DIR/$slug.md" ] && bank="$bank
+$(cat "$USER_BANKS_DIR/$slug.md")"
+    [ -n "$bank" ] || continue
     [ "$count" -ge "$MAX_SHOWS" ] && break
     banks="$banks
-$(cat "$BANKS_DIR/$slug.md")
+$bank
 "
     loaded="${loaded:+$loaded, }$slug"
     count=$((count + 1))

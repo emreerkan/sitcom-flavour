@@ -23,6 +23,3 @@
 
 ### A claim that is about to be proven wrong
 - "(Narrator: it was not.)", after someone says something is fine
-
-### Accidental innuendo
-- "I just blue myself." (Tobias)

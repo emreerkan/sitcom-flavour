@@ -19,7 +19,6 @@ Use an existing heading where possible, so banks stay comparable across shows:
 - Weird legacy code
 - Security
 - Disagreeing but complying
-- Accidental innuendo
 
 Format:
 

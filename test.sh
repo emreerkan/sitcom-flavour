@@ -25,4 +25,10 @@ check "bad frequency falls back"       '[[ "$(SITCOM_FLAVOUR_FREQUENCY=always ct
 printf 'shows=community\nfrequency=often\n' > "$CLAUDE_CONFIG_DIR/sitcom-flavour.conf"
 check "reads config file"              '[[ "$(ctx)" == *"Active shows: community. Frequency: often."* ]]'
 check "env overrides config"           '[[ "$(SITCOM_FLAVOUR_SHOWS=b99 ctx)" == *"Active shows: b99."* ]]'
+mkdir -p "$CLAUDE_CONFIG_DIR/sitcom-flavour/banks"
+printf '### Extra\n- "personal-line-xyz"\n' > "$CLAUDE_CONFIG_DIR/sitcom-flavour/banks/b99.md"
+printf '## Mine\n- "my-show-line"\n' > "$CLAUDE_CONFIG_DIR/sitcom-flavour/banks/my-show.md"
+check "personal bank extends plugin bank" '[[ "$(SITCOM_FLAVOUR_SHOWS=b99 ctx)" == *"Noice"*"personal-line-xyz"* ]]'
+check "personal-only show loads"       '[[ "$(SITCOM_FLAVOUR_SHOWS=my-show ctx)" == *"Active shows: my-show."*"my-show-line"* ]]'
+check "personal show is listed"        '[[ "$(ctx)" == *"Available shows: arrested-development, b99, community, my-show,"* ]]'
 exit $fail

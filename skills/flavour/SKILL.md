@@ -5,7 +5,7 @@ argument-hint: "[status | list | off | <show,show,...> | frequency <rare|sometim
 disable-model-invocation: true
 ---
 
-Manage the sitcom-flavour plugin. The config file path, banks directory and available shows are in the `<sitcom-flavour>` block injected at session start. If that block is missing, the plugin's SessionStart hook didn't run: say so and stop.
+Manage the sitcom-flavour plugin. The config file path, banks directories and available shows are in the `<sitcom-flavour>` block injected at session start. If that block is missing, the plugin's SessionStart hook didn't run: say so and stop.
 
 Arguments: `$ARGUMENTS`
 
@@ -26,4 +26,4 @@ Handle the arguments like this:
 
 When writing, keep any key you aren't changing. Create the file if it doesn't exist.
 
-After a change, read the newly selected bank files from the banks directory so they apply for the rest of this session. Future sessions pick them up at startup. Confirm in one line, and feel free to use a line from a newly loaded show.
+After a change, read the newly selected bank files from the banks directory, plus any file with the same name in the personal banks directory, so they apply for the rest of this session. Future sessions pick them up at startup. Confirm in one line, and feel free to use a line from a newly loaded show.
