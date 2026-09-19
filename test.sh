@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Runs the SessionStart hook under several configs and checks the JSON output.
 set -uo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/plugin"
 export CLAUDE_PLUGIN_ROOT="$PWD"
 export CLAUDE_CONFIG_DIR="$(mktemp -d)"
 trap 'rm -rf "$CLAUDE_CONFIG_DIR"' EXIT

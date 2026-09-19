@@ -2,7 +2,7 @@
 
 The one-page site at https://ada.tools/sitcom-flavour/. Built with [Astro](https://astro.build), plain CSS and a few small TypeScript modules. Fonts are self-hosted through Fontsource.
 
-The situation explorer and the cast cards read `../banks/*.md` at build time, so rebuilding the site picks up bank changes.
+The situation explorer and the cast cards read `../plugin/banks/*.md` at build time, so rebuilding the site picks up bank changes.
 
 ## Develop
 

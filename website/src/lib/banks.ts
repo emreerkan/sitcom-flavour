@@ -21,7 +21,7 @@ export type Show = {
   lineCount: number;
 };
 
-const files = import.meta.glob<string>('../../../banks/*.md', {
+const files = import.meta.glob<string>('../../../plugin/banks/*.md', {
   query: '?raw',
   import: 'default',
   eager: true,

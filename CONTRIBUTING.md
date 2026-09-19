@@ -2,7 +2,7 @@
 
 ## Adding lines
 
-Each bank in `banks/` is grouped by **situation**, not by character. Claude picks lines by matching the moment, so the heading matters more than the quote.
+Each bank in `plugin/banks/` is grouped by **situation**, not by character. Claude picks lines by matching the moment, so the heading matters more than the quote.
 
 Use an existing heading where possible, so banks stay comparable across shows:
 
@@ -35,7 +35,7 @@ Keep each bank under about 40 lines, since every line costs tokens in every sess
 
 ## Adding a show
 
-1. Create `banks/<slug>.md`, using lowercase letters, digits and dashes only. It should start with `## Show Name`.
+1. Create `plugin/banks/<slug>.md`, using lowercase letters, digits and dashes only. It should start with `## Show Name`.
 2. Add it to the table in `README.md`.
 3. Pick shows whose lines work as standalone reactions. Plot-dependent jokes don't land in a code review.
 
