@@ -1,0 +1,18 @@
+{
+  "name": "sitcom-flavour",
+  "description": "Situation-matched sitcom lines for Claude Code",
+  "owner": {
+    "name": "Emre Erkan"
+  },
+  "plugins": [
+    {
+      "name": "sitcom-flavour",
+      "description": "Seasons Claude's replies with situation-matched sitcom lines.",
+      "version": "0.1.0",
+      "source": "./",
+      "author": {
+        "name": "Emre Erkan"
+      }
+    }
+  ]
+}

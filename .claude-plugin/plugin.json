@@ -1,0 +1,12 @@
+{
+  "name": "sitcom-flavour",
+  "description": "Seasons Claude's replies with situation-matched sitcom lines. Brooklyn Nine-Nine, The Office, Parks and Rec, Community, Arrested Development, Silicon Valley.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Emre Erkan"
+  },
+  "homepage": "https://github.com/emreerkan/sitcom-flavour",
+  "repository": "https://github.com/emreerkan/sitcom-flavour",
+  "license": "MIT",
+  "keywords": ["fun", "personality", "sitcom", "quotes", "flavour"]
+}
