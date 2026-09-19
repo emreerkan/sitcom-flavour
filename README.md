@@ -14,6 +14,7 @@ It never shows up in code, comments, commits, PRs or docs, and it stays quiet du
 | `community` | Community |
 | `arrested-development` | Arrested Development |
 | `silicon-valley` | Silicon Valley |
+| `seinfeld` | Seinfeld |
 
 ## Install
 

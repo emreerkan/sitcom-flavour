@@ -60,7 +60,7 @@ function parseBank(slug: string, source: string): Show {
 }
 
 // B99 first: it's the default show.
-const ORDER = ['b99', 'the-office', 'parks-and-rec', 'community', 'arrested-development', 'silicon-valley'];
+const ORDER = ['b99', 'the-office', 'parks-and-rec', 'community', 'arrested-development', 'silicon-valley', 'seinfeld'];
 const rank = (slug: string) => (ORDER.indexOf(slug) + 1 || ORDER.length + 1);
 
 export const shows: Show[] = Object.entries(files)

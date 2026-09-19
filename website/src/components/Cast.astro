@@ -9,7 +9,11 @@ const hues: Record<string, number> = {
   community: 45,
   'arrested-development': 105,
   'silicon-valley': 195,
+  seinfeld: 300,
 };
+
+const words = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+const count = words[shows.length] ?? String(shows.length);
 
 const cast = shows.map((show) => {
   const lines = show.situations.flatMap((s) => s.lines.map((line) => ({ line, heading: s.heading })));
@@ -22,7 +26,7 @@ const cast = shows.map((show) => {
   <div class="wrap">
     <header class="section-head">
       <p class="eyebrow">The cast</p>
-      <h2>Six shows. Pick up to three.</h2>
+      <h2>{count} shows. Pick up to three.</h2>
       <p>Brooklyn Nine-Nine is on by default. Mix and match with <code>/flavour b99,community</code>, or bring your own.</p>
     </header>
 
@@ -48,16 +52,14 @@ const cast = shows.map((show) => {
 
       <li class="card yours">
         <div class="yours-text">
-          <div class="card-top"><code class="slug">~/.claude/sitcom-flavour/banks/</code></div>
+          <div class="card-top"><code class="slug">personal</code></div>
           <h3>Your show</h3>
           <p class="yours-copy">
-            Drop a Markdown file in your personal banks folder. Name it after a bundled show to extend it, or anything
-            else to add a new one. It never ships with the plugin, so your spicier lines stay yours.
+            Add lines in <code>~/.claude/sitcom-flavour/banks/</code>. They never ship, so the spicy ones stay yours.
           </p>
         </div>
         <pre><code><span class="c">## The Wire</span>
-<span class="c">### Root cause found</span>
-- "All the pieces matter." (Freamon)</code></pre>
+- "All the pieces matter."</code></pre>
       </li>
     </ul>
   </div>
@@ -67,7 +69,7 @@ const cast = shows.map((show) => {
   .cast { background: var(--paper-2); border-block: 1px solid var(--rule); }
   .section-head code { white-space: nowrap; font-size: 0.85em; background: var(--card); border: 1px solid var(--rule); padding: 0.1rem 0.4rem; border-radius: 6px; }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: 1rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15.5rem), 1fr)); gap: 1rem; }
 
   .card {
     --accent: oklch(0.72 0.14 var(--h, 30));
@@ -100,17 +102,15 @@ const cast = shows.map((show) => {
   .stats { font-size: 0.82rem; color: var(--ink-3); font-variant-numeric: tabular-nums; border-top: 1px dashed var(--rule); padding-top: 0.8rem; }
 
   .yours {
-    grid-column: 1 / -1;
-    display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1.5rem 2.5rem; align-items: center;
     background: transparent; border: 2px dashed var(--ink-3);
   }
   .yours-text { display: grid; gap: 0.9rem; }
-  @media (max-width: 760px) { .yours { grid-template-columns: 1fr; } }
   .yours::before { background: repeating-linear-gradient(90deg, var(--red) 0 14px, transparent 14px 22px); }
   .yours-copy { color: var(--ink-2); font-size: 0.95rem; }
+  .yours-copy code { font-size: 0.8em; overflow-wrap: anywhere; }
   .yours pre {
     background: var(--term); color: var(--term-ink);
-    border-radius: 10px; padding: 1rem 1.1rem; font-size: 0.85rem; overflow-x: auto; line-height: 1.7;
+    border-radius: 10px; padding: 0.9rem 1rem; font-size: 0.78rem; white-space: pre-wrap; line-height: 1.6;
   }
   .yours .c { color: var(--term-dim); }
 </style>

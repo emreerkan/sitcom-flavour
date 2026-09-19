@@ -55,4 +55,13 @@ export const scenes: Scene[] = [
     line: 'Staging just put on a felt goatee.',
     show: 'Community',
   },
+  {
+    prompt: 'why was the customer charged twice?',
+    tool: 'Grep(handlePaymentWebhook)',
+    result: 'no idempotency key on the charge call',
+    ok: false,
+    reply: 'The webhook timed out, Stripe retried it, and the handler charged the card again. Nothing checks whether the event was already processed.',
+    line: 'Did you just double-dip that webhook?',
+    show: 'Seinfeld',
+  },
 ];
