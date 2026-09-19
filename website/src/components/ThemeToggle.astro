@@ -1,0 +1,67 @@
+---
+// Cycles auto → lights on → lights off. "Auto" follows the OS.
+---
+
+<button class="toggle" type="button" data-theme-toggle aria-label="Theme: auto">
+  <svg class="i i-auto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/></svg>
+  <svg class="i i-light" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></svg>
+  <svg class="i i-dark" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" fill="currentColor"/></svg>
+  <span class="label" data-theme-label>Auto</span>
+</button>
+
+<style>
+  .toggle {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    height: 2.4rem; padding: 0 0.85rem 0 0.7rem;
+    border: 1px solid var(--rule); border-radius: 999px;
+    background: var(--card); color: var(--ink-2);
+    font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .toggle:hover { color: var(--ink); border-color: var(--ink-3); }
+  .i { width: 1.05rem; height: 1.05rem; display: none; }
+  :global(html:not([data-theme])) .i-auto,
+  :global(html[data-theme='light']) .i-light,
+  :global(html[data-theme='dark']) .i-dark { display: block; }
+  @media (max-width: 520px) { .label { display: none; } .toggle { padding: 0; width: 2.4rem; justify-content: center; } }
+</style>
+
+<script>
+  type Mode = 'auto' | 'light' | 'dark';
+  const labels: Record<Mode, string> = { auto: 'Auto', light: 'Lights on', dark: 'Lights off' };
+  const next: Record<Mode, Mode> = { auto: 'light', light: 'dark', dark: 'auto' };
+  const root = document.documentElement;
+
+  const current = (): Mode => (root.dataset.theme as Mode | undefined) ?? 'auto';
+
+  function apply(mode: Mode) {
+    if (mode === 'auto') delete root.dataset.theme;
+    else root.dataset.theme = mode;
+    try {
+      if (mode === 'auto') localStorage.removeItem('sf-theme');
+      else localStorage.setItem('sf-theme', mode);
+    } catch {}
+    render();
+  }
+
+  function render() {
+    const mode = current();
+    for (const btn of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
+      btn.setAttribute('aria-label', `Theme: ${labels[mode]}. Switch to ${labels[next[mode]]}`);
+      const label = btn.querySelector('[data-theme-label]');
+      if (label) label.textContent = labels[mode];
+    }
+  }
+
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
+    btn.addEventListener('click', () => {
+      const mode = next[current()];
+      // A quick flicker, like someone hitting the studio lights.
+      const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
+      if (doc.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        doc.startViewTransition(() => apply(mode));
+      } else apply(mode);
+    });
+  }
+  render();
+</script>

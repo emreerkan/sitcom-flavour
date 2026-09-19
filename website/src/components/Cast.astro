@@ -1,0 +1,116 @@
+---
+import { shows } from '../lib/banks';
+
+// One accent hue per show, used sparingly.
+const hues: Record<string, number> = {
+  b99: 85,
+  'the-office': 250,
+  'parks-and-rec': 150,
+  community: 45,
+  'arrested-development': 105,
+  'silicon-valley': 195,
+};
+
+const cast = shows.map((show) => {
+  const lines = show.situations.flatMap((s) => s.lines.map((line) => ({ line, heading: s.heading })));
+  const pick = lines.find((l) => l.line.kind === 'quote' && l.line.text.length > 12) ?? lines[0];
+  return { show, pick, hue: hues[show.slug] ?? 30 };
+});
+---
+
+<section class="section cast" id="cast">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow">The cast</p>
+      <h2>Six shows. Pick up to three.</h2>
+      <p>Brooklyn Nine-Nine is on by default. Mix and match with <code>/flavour b99,community</code>, or bring your own.</p>
+    </header>
+
+    <ul class="grid" role="list">
+      {cast.map(({ show, pick, hue }) => (
+        <li class="card" style={`--h:${hue}`}>
+          <div class="card-top">
+            <code class="slug">{show.slug}</code>
+            {show.slug === 'b99' && <span class="badge">Default</span>}
+          </div>
+          <h3>{show.name}</h3>
+          {pick && (
+            <blockquote>
+              <p>{pick.line.kind === 'quote' ? `“${pick.line.text}”` : pick.line.text}</p>
+              {pick.line.who && <cite>{pick.line.who}</cite>}
+            </blockquote>
+          )}
+          <p class="stats">
+            {show.lineCount} lines · {show.situations.length} situations
+          </p>
+        </li>
+      ))}
+
+      <li class="card yours">
+        <div class="yours-text">
+          <div class="card-top"><code class="slug">~/.claude/sitcom-flavour/banks/</code></div>
+          <h3>Your show</h3>
+          <p class="yours-copy">
+            Drop a Markdown file in your personal banks folder. Name it after a bundled show to extend it, or anything
+            else to add a new one. It never ships with the plugin, so your spicier lines stay yours.
+          </p>
+        </div>
+        <pre><code><span class="c">## The Wire</span>
+<span class="c">### Root cause found</span>
+- "All the pieces matter." (Freamon)</code></pre>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cast { background: var(--paper-2); border-block: 1px solid var(--rule); }
+  .section-head code { white-space: nowrap; font-size: 0.85em; background: var(--card); border: 1px solid var(--rule); padding: 0.1rem 0.4rem; border-radius: 6px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: 1rem; }
+
+  .card {
+    --accent: oklch(0.72 0.14 var(--h, 30));
+    position: relative;
+    display: flex; flex-direction: column; gap: 0.9rem;
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    background: var(--card);
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    transition: transform 0.3s var(--ease-spring), box-shadow 0.3s;
+  }
+  .card::before {
+    content: ''; position: absolute; inset: 0 0 auto; height: 5px; background: var(--accent);
+  }
+  .card:hover { transform: translateY(-3px) rotate(-0.4deg); box-shadow: var(--shadow); }
+
+  .card-top { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .slug { font-size: 0.78rem; color: var(--ink-3); overflow-wrap: anywhere; }
+  .badge {
+    font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.2rem 0.55rem; border-radius: 999px;
+    background: var(--red); color: white;
+  }
+  h3 { font-size: 1.6rem; font-weight: 800; font-stretch: 82%; }
+
+  blockquote { font-family: var(--font-script); font-size: 1.02rem; line-height: 1.45; flex: 1; }
+  cite { display: block; margin-top: 0.3rem; font-style: normal; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; color: var(--ink-2); }
+  cite::before { content: '— '; }
+  .stats { font-size: 0.82rem; color: var(--ink-3); font-variant-numeric: tabular-nums; border-top: 1px dashed var(--rule); padding-top: 0.8rem; }
+
+  .yours {
+    grid-column: 1 / -1;
+    display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1.5rem 2.5rem; align-items: center;
+    background: transparent; border: 2px dashed var(--ink-3);
+  }
+  .yours-text { display: grid; gap: 0.9rem; }
+  @media (max-width: 760px) { .yours { grid-template-columns: 1fr; } }
+  .yours::before { background: repeating-linear-gradient(90deg, var(--red) 0 14px, transparent 14px 22px); }
+  .yours-copy { color: var(--ink-2); font-size: 0.95rem; }
+  .yours pre {
+    background: var(--term); color: var(--term-ink);
+    border-radius: 10px; padding: 1rem 1.1rem; font-size: 0.85rem; overflow-x: auto; line-height: 1.7;
+  }
+  .yours .c { color: var(--term-dim); }
+</style>

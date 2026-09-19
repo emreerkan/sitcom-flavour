@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Situations from '../components/Situations.astro';
+import Frequency from '../components/Frequency.astro';
+import Rules from '../components/Rules.astro';
+import Cast from '../components/Cast.astro';
+import Install from '../components/Install.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base
+  title="sitcom-flavour · Sitcom lines for Claude Code"
+  description="A Claude Code plugin that drops the occasional, perfectly timed sitcom line into your chats. Brooklyn Nine-Nine, The Office, Parks and Rec, Community, Arrested Development and Silicon Valley. Never in your code."
+>
+  <Header />
+  <main>
+    <Hero />
+    <Situations />
+    <Frequency />
+    <Rules />
+    <Cast />
+    <Install />
+  </main>
+  <Footer />
+</Base>

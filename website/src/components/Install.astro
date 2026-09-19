@@ -1,0 +1,119 @@
+---
+import Command from './Command.astro';
+
+const steps = [
+  { title: 'Add the marketplace', cmd: '/plugin marketplace add emreerkan/sitcom-flavour' },
+  { title: 'Install the plugin', cmd: '/plugin install sitcom-flavour@sitcom-flavour' },
+  { title: 'Start a new session', cmd: 'claude' },
+];
+
+const usage = [
+  ['/flavour', 'Show the current shows and frequency'],
+  ['/flavour list', 'List every available show'],
+  ['/flavour b99,community', 'Pick up to three shows'],
+  ['/flavour frequency sometimes', 'rare · sometimes · often'],
+  ['/flavour off', 'Cameras off for a focused session'],
+];
+
+const facts = [
+  ['~300–500', 'tokens of context per show'],
+  ['0', 'network calls, telemetry or MCP servers'],
+  ['bash', 'the only thing it needs'],
+];
+---
+
+<section class="section install" id="install">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow">Places, everyone</p>
+      <h2>On air in three commands.</h2>
+      <p>Run these inside Claude Code. The show starts with your next session.</p>
+    </header>
+
+    <ol class="steps" role="list">
+      {steps.map((s, i) => (
+        <li>
+          <span class="num" aria-hidden="true">{i + 1}</span>
+          <h3>{s.title}</h3>
+          <Command cmd={s.cmd} />
+        </li>
+      ))}
+    </ol>
+
+    <div class="lower">
+      <div class="usage">
+        <h3>Change the channel</h3>
+        <dl>
+          {usage.map(([cmd, what]) => (
+            <div>
+              <dt><code>{cmd}</code></dt>
+              <dd>{what}</dd>
+            </div>
+          ))}
+        </dl>
+        <p class="aside">
+          Settings live in <code>~/.claude/sitcom-flavour.conf</code>. Set <code>SITCOM_FLAVOUR_SHOWS</code>{' '}and{' '}
+          <code>SITCOM_FLAVOUR_FREQUENCY</code> in a project's <code>.claude/settings.json</code> to override them per project.
+        </p>
+      </div>
+
+      <ul class="facts" role="list">
+        {facts.map(([big, small]) => (
+          <li><strong>{big}</strong><span>{small}</span></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .steps { display: grid; gap: 0.75rem; }
+  .steps li {
+    display: grid; grid-template-columns: auto minmax(0, 14rem) minmax(0, 1fr); gap: 1.25rem; align-items: center;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius);
+    background: var(--card);
+    border: 1px solid var(--rule);
+  }
+  .num {
+    display: grid; place-items: center;
+    width: 2.6rem; height: 2.6rem; border-radius: 50%;
+    background: var(--gold); color: oklch(0.2 0.012 60);
+    font-weight: 800; font-size: 1.2rem;
+  }
+  .steps h3 { font-size: 1.25rem; font-weight: 750; }
+
+  .lower { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 1rem; margin-top: 1rem; }
+  .usage { padding: 1.75rem; border-radius: var(--radius); border: 1px solid var(--rule); }
+  .usage h3 { font-size: 1.25rem; font-weight: 750; margin-bottom: 1rem; }
+  dl { display: grid; gap: 0; }
+  dl div {
+    display: grid; grid-template-columns: minmax(0, 18rem) 1fr; gap: 1rem; align-items: baseline;
+    padding: 0.65rem 0; border-top: 1px dashed var(--rule);
+  }
+  dt code { font-weight: 600; color: var(--red-ink); white-space: nowrap; }
+  dd { color: var(--ink-2); font-size: 0.95rem; }
+  .aside { margin-top: 1.1rem; font-size: 0.88rem; color: var(--ink-3); }
+  .aside code { color: var(--ink-2); }
+
+  .facts { display: grid; gap: 1rem; }
+  .facts li {
+    display: grid; gap: 0.2rem; align-content: center;
+    padding: 1.4rem 1.5rem;
+    border-radius: var(--radius);
+    background: var(--term); color: var(--term-ink);
+  }
+  .facts strong { font-size: 2.2rem; font-weight: 800; font-stretch: 78%; line-height: 1; color: var(--gold); }
+  .facts span { color: var(--term-dim); font-size: 0.92rem; }
+
+  @media (max-width: 960px) {
+    .lower { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .steps li { grid-template-columns: auto 1fr; }
+    .steps li :global(.cmd) { grid-column: 1 / -1; }
+  }
+  @media (max-width: 560px) {
+    dl div { grid-template-columns: 1fr; gap: 0.2rem; }
+  }
+</style>

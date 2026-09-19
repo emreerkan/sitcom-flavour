@@ -7,7 +7,7 @@
 ### Concise solution
 - "Why waste time say lot word when few word do trick?" (Kevin)
 
-### Fix didn't fix it, flaky test
+### Fix didn't fix it, recurring bug, flaky test
 - "I'm not superstitious, but I am a little stitious." (Michael), for retrying until green
 
 ### Disaster, broken prod

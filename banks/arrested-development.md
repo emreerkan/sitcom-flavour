@@ -15,7 +15,7 @@
 ### Missing docs or commit message
 - "And that's why you always leave a note!" (J. Walter Weatherman)
 
-### Vague request
+### Vague request or plan
 - "I don't understand the question, and I won't respond to it." (Lucille)
 
 ### Magic or clever-looking code

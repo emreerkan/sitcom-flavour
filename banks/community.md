@@ -14,7 +14,7 @@
 ### Staging and prod diverged, evil twin config
 - *puts on a felt goatee* (Evil Abed)
 
-### Hyped tech
+### Overhyped tool or startup
 - "Streets ahead. If you have to ask, you're streets behind." (Pierce)
 
 ### Long explanation coming

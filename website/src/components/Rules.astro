@@ -1,0 +1,108 @@
+---
+const onAir = [
+  ['Chat replies only', 'One line, at the start or the end. The answer always comes first.'],
+  ['Matched to the moment', 'The right line for the situation beats the famous line.'],
+  ['Rotates the cast', 'Across shows and characters. No line twice in a session.'],
+  ['Paraphrase welcome', '“Cool fix. Still a race condition.”'],
+];
+const offAir = [
+  ['Anything that outlives the chat', 'Code, comments, commit messages, PR descriptions, docs.'],
+  ['Bad days', 'Incidents, data loss, or a user who is clearly frustrated.'],
+  ['Explaining the joke', 'Never. If it needs a footnote, it didn’t land.'],
+];
+---
+
+<section class="section rules" id="rules">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow">Studio rules</p>
+      <h2>Knows when the cameras are off.</h2>
+      <p>The rules ship with the plugin and load with every session. Your repo stays exactly as serious as you left it.</p>
+    </header>
+
+    <div class="boards">
+      <article class="board on">
+        <h3><span class="sign">On air</span></h3>
+        <ul role="list">
+          {onAir.map(([title, body]) => (
+            <li><strong>{title}</strong><span>{body}</span></li>
+          ))}
+        </ul>
+      </article>
+
+      <article class="board off">
+        <h3><span class="sign">Off air</span></h3>
+        <ul role="list">
+          {offAir.map(([title, body]) => (
+            <li><strong>{title}</strong><span>{body}</span></li>
+          ))}
+        </ul>
+
+        <figure class="diff" aria-label="Example: a sitcom line cut from a code comment">
+          <div class="diff-head">src/queue/worker.ts</div>
+          <pre><code><span class="del">-  // Cool motive. Still murder.</span>
+<span class="add">+  // Retries are capped at 3. See ADR-012.</span>
+   const MAX_RETRIES = 3;</code></pre>
+          <span class="stamp" aria-hidden="true">Cut!</span>
+        </figure>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .boards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 1.75rem); }
+
+  .board {
+    position: relative;
+    padding: clamp(1.4rem, 3.5vw, 2.25rem);
+    border-radius: var(--radius);
+    background: var(--card);
+    border: 1px solid var(--rule);
+    box-shadow: var(--shadow);
+  }
+  .sign {
+    display: inline-block;
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.9rem; font-weight: 800; font-stretch: 85%;
+    letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .on .sign { background: var(--red); color: white; box-shadow: var(--glow); }
+  .off .sign { border: 2px solid var(--rule); color: var(--ink-3); }
+
+  ul { display: grid; gap: 1.1rem; margin-top: 1.5rem; }
+  li { display: grid; gap: 0.15rem; padding-left: 1.6rem; position: relative; }
+  li::before { position: absolute; left: 0; top: 0.05rem; font-weight: 800; }
+  .on li::before { content: '✓'; color: var(--red-ink); }
+  .off li::before { content: '✕'; color: var(--ink-3); }
+  li strong { font-weight: 700; }
+  li span { color: var(--ink-2); }
+
+  .diff {
+    position: relative;
+    margin-top: 1.75rem;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--term);
+    color: var(--term-ink);
+    font-size: 0.82rem;
+  }
+  .diff-head { padding: 0.55rem 0.9rem; color: var(--term-dim); border-bottom: 1px solid oklch(1 0 0 / 0.07); font-family: var(--font-mono); font-size: 0.78rem; }
+  pre { padding: 0.8rem 0.9rem; overflow-x: auto; line-height: 1.7; }
+  .del { color: oklch(0.72 0.16 25); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+  .add { color: var(--term-green); }
+  .stamp {
+    position: absolute; right: 0.9rem; top: 50%;
+    padding: 0.15rem 0.7rem;
+    border: 3px solid var(--red); border-radius: 6px;
+    color: var(--red);
+    font-family: var(--font-display); font-weight: 800; font-stretch: 80%; font-size: 1.5rem;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    transform: translateY(-50%) rotate(-12deg);
+    background: color-mix(in oklch, var(--term) 70%, transparent);
+    mix-blend-mode: normal;
+  }
+
+  @media (max-width: 820px) { .boards { grid-template-columns: 1fr; } }
+</style>

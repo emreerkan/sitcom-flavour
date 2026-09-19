@@ -1,0 +1,176 @@
+---
+type Level = 'rare' | 'sometimes' | 'often';
+
+type Turn = {
+  reply: string;
+  line?: string;
+  who?: string;
+  on: Level[];
+  skip?: string;
+};
+
+const turns: Turn[] = [
+  { reply: 'Deployed to staging. Health checks pass.', line: 'Toit.', who: 'Jake', on: ['often'] },
+  { reply: 'The migration adds an index on orders.created_at. About 40 seconds at prod size.', on: [], skip: 'Nothing fits. Nothing forced.' },
+  { reply: 'Same error after the patch. The cache key still ignores the locale.', line: 'And yet, crime has continued.', on: ['sometimes', 'often'] },
+  { reply: 'You were right: the vendor SDK is the bottleneck, not the database.', line: 'VINDICATION!', who: 'Holt', on: ['often'] },
+  { reply: 'Replaced 400 queries in the loop with one JOIN.', line: 'Why waste time say lot word when few word do trick?', who: 'Kevin', on: ['often'] },
+  { reply: 'All 214 tests green on main.', line: 'Noice. Smort.', who: 'Jake', on: ['rare', 'sometimes', 'often'] },
+  { reply: 'Plan: three phases, each one shippable on its own. Details below.', line: "I'll make a binder.", who: 'Amy', on: ['sometimes', 'often'] },
+  { reply: 'Prod is back. Root cause: an expired TLS cert on the internal API.', on: [], skip: 'Incident. Off limits at any frequency.' },
+];
+
+const levels: { id: Level; label: string; blurb: string }[] = [
+  { id: 'rare', label: 'Rare', blurb: 'Only when a line really lands. The default.' },
+  { id: 'sometimes', label: 'Sometimes', blurb: 'Every few replies, when one genuinely fits.' },
+  { id: 'often', label: 'Often', blurb: 'Most replies where one fits. Still never forced.' },
+];
+---
+
+<section class="section frequency" id="frequency" data-frequency data-level="rare">
+  <div class="wrap grid">
+    <header class="section-head side">
+      <p class="eyebrow">Three volume settings</p>
+      <h2>Seasoning, not the meal.</h2>
+      <p>
+        The answer always comes first. The line goes at the start or the end, it's one line, and the joke
+        is never explained. Pick how often it happens.
+      </p>
+
+      <div class="levels" role="radiogroup" aria-label="Frequency">
+        {levels.map((l, i) => (
+          <label class="level">
+            <input type="radio" name="freq" value={l.id} checked={i === 0} />
+            <span class="level-name">{l.label}</span>
+            <span class="level-blurb">{l.blurb}</span>
+          </label>
+        ))}
+      </div>
+
+      <p class="cmd-hint"><code>/flavour frequency <span data-level-name>rare</span></code></p>
+    </header>
+
+    <ol class="transcript" role="list" aria-label="Eight example replies">
+      {turns.map((t) => (
+        <li class="turn" data-on={t.on.join(' ')}>
+          <p class="reply"><span class="bullet" aria-hidden="true">⏺</span>{t.reply}</p>
+          {t.line && (
+            <p class="flavour">
+              {t.line}
+              {t.who && <span class="who"> ({t.who})</span>}
+            </p>
+          )}
+          {t.skip && <p class="skip">{t.skip}</p>}
+        </li>
+      ))}
+      <li class="tally" aria-live="polite"><span data-tally>1</span> of {turns.length} replies got a line.</li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .side { position: sticky; top: 6rem; margin-bottom: 0; }
+
+  .levels { display: grid; gap: 0.5rem; margin-top: 1rem; }
+  .level {
+    position: relative;
+    display: grid; grid-template-columns: auto 1fr; column-gap: 0.9rem; align-items: baseline;
+    padding: 0.85rem 1rem 0.85rem 2.8rem;
+    border: 1px solid var(--rule); border-radius: 12px;
+    background: var(--card);
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s var(--ease-spring);
+  }
+  .level:hover { border-color: var(--ink-3); }
+  .level:has(input:checked) { border-color: var(--red); box-shadow: 0 0 0 1px var(--red), var(--shadow); }
+  .level:has(input:focus-visible) { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .level input { position: absolute; opacity: 0; pointer-events: none; }
+  .level::before {
+    content: ''; position: absolute; left: 1rem; top: 50%; translate: 0 -50%;
+    width: 1.05rem; height: 1.05rem; border-radius: 50%;
+    border: 2px solid var(--ink-3); background: var(--paper);
+    transition: border 0.2s, background 0.2s, box-shadow 0.2s;
+  }
+  .level:has(input:checked)::before { border: 5px solid var(--red); background: white; box-shadow: var(--glow); }
+  .level-name { font-weight: 750; }
+  .level-blurb { color: var(--ink-2); font-size: 0.92rem; }
+
+  .cmd-hint { font-size: 0.9rem; color: var(--ink-3); }
+  .cmd-hint code { background: var(--paper-2); border: 1px solid var(--rule); padding: 0.3rem 0.55rem; border-radius: 7px; color: var(--ink); }
+
+  .transcript {
+    display: grid; gap: 0.75rem;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    background: var(--term); color: var(--term-ink);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    list-style: none;
+  }
+  .turn {
+    padding: 0.8rem 0.9rem;
+    border-radius: 10px;
+    background: oklch(1 0 0 / 0.035);
+    border: 1px solid oklch(1 0 0 / 0.05);
+  }
+  .reply { display: flex; gap: 0.6rem; line-height: 1.5; }
+  .bullet { color: var(--term-green); flex: none; }
+
+  .flavour, .skip {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding-left: 1.45rem;
+    transition: max-height 0.45s var(--ease-out), opacity 0.35s, margin 0.45s var(--ease-out);
+  }
+  .flavour { font-family: var(--font-script); color: var(--gold); font-size: 1.05rem; }
+  .who { color: var(--term-dim); font-size: 0.85em; }
+  .skip { color: var(--term-dim); font-size: 0.8rem; }
+
+  .turn[data-lit] .flavour { max-height: 5rem; opacity: 1; margin-top: 0.45rem; }
+  .turn[data-lit] { border-color: color-mix(in oklch, var(--gold) 35%, transparent); }
+  .turn:has(.skip) .skip { max-height: 3rem; opacity: 0.85; margin-top: 0.35rem; }
+  .turn:has(.skip) .skip::before { content: '— '; }
+
+  .tally { color: var(--term-dim); font-size: 0.82rem; padding: 0.25rem 0.2rem 0; }
+  .tally span { color: var(--gold); font-weight: 700; }
+
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr; }
+    .side { position: static; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-frequency]');
+  if (root) {
+    const turns = [...root.querySelectorAll<HTMLElement>('.turn')];
+    const tally = root.querySelector('[data-tally]');
+    const name = root.querySelector('[data-level-name]');
+
+    function apply(level: string) {
+      let lit = 0;
+      turns.forEach((turn, i) => {
+        const on = (turn.dataset.on ?? '').split(' ').includes(level);
+        // Stagger so the change reads as a sweep down the transcript.
+        setTimeout(() => turn.toggleAttribute('data-lit', on), i * 45);
+        if (on) lit++;
+      });
+      if (tally) tally.textContent = String(lit);
+      if (name) name.textContent = level;
+      root!.dataset.level = level;
+    }
+
+    for (const input of root.querySelectorAll<HTMLInputElement>('input[name="freq"]')) {
+      input.addEventListener('change', () => input.checked && apply(input.value));
+    }
+    apply('rare');
+  }
+</script>

@@ -1,0 +1,227 @@
+---
+import { scenes } from '../lib/scenes';
+
+const first = scenes[0]!;
+---
+
+<figure class="term" data-terminal data-scenes={JSON.stringify(scenes)}>
+  <div class="chrome" aria-hidden="true">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    <span class="title">claude — ~/projects/app</span>
+  </div>
+
+  <div class="screen" aria-live="off">
+    <p class="row user"><span class="caret">&gt;</span> <span data-slot="prompt">{first.prompt}</span><span class="cursor" aria-hidden="true"></span></p>
+    <div class="row tool" data-slot="tool-row">
+      <p><span class="bullet">⏺</span> <span data-slot="tool">{first.tool}</span></p>
+      <p class="result"><span class="elbow">⎿</span> <span data-slot="result" class:list={[first.ok ? 'ok' : 'bad']}>{first.result}</span></p>
+    </div>
+    <div class="row reply" data-slot="reply-row">
+      <p><span class="bullet">⏺</span> <span data-slot="reply">{first.reply}</span></p>
+      <p class="line" data-slot="line-row">
+        <span data-slot="line">{first.line}</span>
+      </p>
+    </div>
+  </div>
+
+  <figcaption class="foot">
+    <span class="scene-label">Scene <span data-slot="index">1</span> / {scenes.length} · <span data-slot="show">{first.show}</span></span>
+    <span class="controls">
+      <button type="button" data-action="prev" aria-label="Previous scene">‹</button>
+      <button type="button" data-action="toggle" aria-label="Pause demo" data-slot="toggle">❚❚</button>
+      <button type="button" data-action="next" aria-label="Next scene">›</button>
+    </span>
+  </figcaption>
+</figure>
+
+<style>
+  .term {
+    --pad: clamp(1rem, 3vw, 1.75rem);
+    background: var(--term);
+    color: var(--term-ink);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow), 0 40px 80px -40px oklch(0.25 0.04 50 / 0.45);
+    border: 1px solid color-mix(in oklch, var(--term-ink) 12%, transparent);
+    font-family: var(--font-mono);
+    font-size: clamp(0.82rem, 1.5vw, 0.98rem);
+    line-height: 1.6;
+    transform: rotate(-0.35deg);
+  }
+  .chrome {
+    display: flex; align-items: center; gap: 0.45rem;
+    padding: 0.8rem var(--pad);
+    border-bottom: 1px solid oklch(1 0 0 / 0.07);
+  }
+  .dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: oklch(1 0 0 / 0.14); }
+  .dot:first-child { background: var(--red); }
+  .title { margin-left: auto; margin-right: auto; color: var(--term-dim); font-size: 0.8em; transform: translateX(-1.3rem); }
+
+  .screen {
+    padding: var(--pad);
+    display: grid; gap: 1.1rem; align-content: start;
+    min-height: 17.5rem;
+  }
+  .row { transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out); }
+  .row[data-hidden] { opacity: 0; transform: translateY(6px); }
+  .user { color: var(--term-ink); }
+  .caret { color: var(--gold); font-weight: 700; }
+  .cursor {
+    display: inline-block; width: 0.55em; height: 1.1em; margin-left: 2px;
+    vertical-align: -0.18em; background: var(--term-ink); opacity: 0;
+  }
+  [data-typing] .cursor { opacity: 1; animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .bullet { color: var(--term-green); }
+  .tool .bullet { color: var(--term-dim); }
+  .result { color: var(--term-dim); padding-left: 1.1rem; }
+  .elbow { margin-right: 0.35rem; }
+  .ok { color: var(--term-green); }
+  .bad { color: oklch(0.72 0.17 30); }
+  .reply p:first-child { display: flex; gap: 0.6rem; }
+  .reply p:first-child .bullet { flex: none; }
+
+  .line {
+    margin-top: 0.7rem;
+    padding-left: 1.45rem;
+    font-family: var(--font-script);
+    font-size: 1.12em;
+    color: var(--gold);
+    transition: opacity 0.4s, transform 0.5s var(--ease-spring), filter 0.4s;
+  }
+  .line[data-hidden] { opacity: 0; transform: translateX(-10px) scale(0.98); filter: blur(3px); }
+
+  .foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.7rem var(--pad);
+    border-top: 1px solid oklch(1 0 0 / 0.07);
+    color: var(--term-dim); font-size: 0.8em;
+  }
+  .controls { display: inline-flex; gap: 0.3rem; }
+  .controls button {
+    width: 2rem; height: 2rem; border-radius: 8px; border: 0;
+    background: oklch(1 0 0 / 0.07); color: var(--term-ink); cursor: pointer; font-size: 0.95rem; line-height: 1;
+  }
+  .controls button:hover { background: oklch(1 0 0 / 0.14); }
+
+  @media (max-width: 560px) {
+    .term { transform: none; }
+    .title { display: none; }
+    .screen { min-height: 21rem; }
+  }
+</style>
+
+<script>
+  import type { Scene } from '../lib/scenes';
+
+  const root = document.querySelector<HTMLElement>('[data-terminal]');
+  if (root) run(root);
+
+  function run(root: HTMLElement) {
+    const scenes: Scene[] = JSON.parse(root.dataset.scenes ?? '[]');
+    const $ = (name: string) => root.querySelector<HTMLElement>(`[data-slot="${name}"]`)!;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let index = 0;
+    let playing = !reduce;
+    let visible = false;
+    let intersecting = false;
+    let token = 0;
+
+    const wait = (ms: number, t: number) =>
+      new Promise<void>((resolve, reject) => setTimeout(() => (t === token ? resolve() : reject()), ms));
+
+    function paint(scene: Scene, i: number) {
+      $('prompt').textContent = scene.prompt;
+      $('tool').textContent = scene.tool;
+      $('result').textContent = scene.result;
+      $('result').className = scene.ok ? 'ok' : 'bad';
+      $('reply').textContent = scene.reply;
+      $('line').textContent = scene.line;
+      $('index').textContent = String(i + 1);
+      $('show').textContent = scene.show;
+    }
+
+    function showAll() {
+      for (const el of root.querySelectorAll('[data-hidden]')) el.removeAttribute('data-hidden');
+      root.removeAttribute('data-typing');
+    }
+
+    async function play(i: number) {
+      const t = ++token;
+      const scene = scenes[i]!;
+      index = i;
+      paint(scene, i);
+
+      if (!playing || !visible) {
+        showAll();
+        return;
+      }
+
+      $('tool-row').dataset.hidden = '';
+      $('reply-row').dataset.hidden = '';
+      $('line-row').dataset.hidden = '';
+      $('prompt').textContent = '';
+      root.dataset.typing = '';
+
+      try {
+        await wait(400, t);
+        for (const ch of scene.prompt) {
+          $('prompt').textContent += ch;
+          await wait(28 + Math.random() * 45, t);
+        }
+        await wait(350, t);
+        root.removeAttribute('data-typing');
+        delete $('tool-row').dataset.hidden;
+        await wait(900, t);
+
+        $('reply').textContent = '';
+        delete $('reply-row').dataset.hidden;
+        for (const word of scene.reply.split(' ')) {
+          $('reply').textContent += ($('reply').textContent ? ' ' : '') + word;
+          await wait(35 + Math.random() * 40, t);
+        }
+        await wait(700, t);
+        delete $('line-row').dataset.hidden;
+        document.dispatchEvent(new CustomEvent('sf:line'));
+        await wait(4200, t);
+        void play((index + 1) % scenes.length);
+      } catch {
+        // Superseded by a newer scene.
+      }
+    }
+
+    function setPlaying(value: boolean) {
+      playing = value;
+      const btn = $('toggle');
+      btn.textContent = playing ? '❚❚' : '▶';
+      btn.setAttribute('aria-label', playing ? 'Pause demo' : 'Play demo');
+      if (!playing) {
+        token++;
+        showAll();
+      } else void play(index);
+    }
+
+    root.querySelector('[data-action="prev"]')?.addEventListener('click', () => void play((index - 1 + scenes.length) % scenes.length));
+    root.querySelector('[data-action="next"]')?.addEventListener('click', () => void play((index + 1) % scenes.length));
+    root.querySelector('[data-action="toggle"]')?.addEventListener('click', () => setPlaying(!playing));
+    if (reduce) setPlaying(false);
+
+    // Only animate while on screen and in a visible tab.
+    function update() {
+      const was = visible;
+      visible = intersecting && document.visibilityState === 'visible';
+      if (visible && !was && playing) void play(index);
+      if (!visible && was) {
+        token++;
+        showAll();
+      }
+    }
+    new IntersectionObserver(([entry]) => {
+      intersecting = !!entry?.isIntersecting;
+      update();
+    }, { threshold: 0.35 }).observe(root);
+    document.addEventListener('visibilitychange', update);
+  }
+</script>

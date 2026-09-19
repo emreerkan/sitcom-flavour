@@ -55,6 +55,10 @@ A `SessionStart` hook reads the config and injects the selected banks as context
 
 At most 3 shows load at once, so the token cost stays small (roughly 300–500 tokens per show).
 
+## Website
+
+https://ada.tools/sitcom-flavour/ is built from [`website/`](website/).
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).

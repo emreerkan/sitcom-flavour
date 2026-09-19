@@ -1,0 +1,57 @@
+---
+// Source for public/og.png. Regenerate with `pnpm og` while `pnpm preview` runs.
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+import { shows, totalLines } from '../lib/banks';
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>sitcom-flavour social card</title>
+  </head>
+  <body>
+    <main class="card">
+      <div class="glow" aria-hidden="true"></div>
+      <p class="top"><Logo size={40} /> sitcom-flavour <span>· a Claude Code plugin</span></p>
+      <h1>HOT DAMN<span>!</span></h1>
+      <p class="sub">Sitcom lines for your Claude Code sessions. Never in your code.</p>
+      <p class="meta">{shows.length} shows · {totalLines} lines · /flavour</p>
+      <div class="lamp">Applause</div>
+    </main>
+  </body>
+</html>
+
+<style>
+  body { margin: 0; background: var(--paper); }
+  .card {
+    position: relative; overflow: hidden; isolation: isolate;
+    width: 1200px; height: 630px; box-sizing: border-box;
+    padding: 56px 72px;
+    display: grid; align-content: space-between;
+  }
+  .glow {
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(520px 300px at 12% 10%, color-mix(in oklch, var(--gold) 35%, transparent), transparent 70%),
+      radial-gradient(520px 300px at 100% 100%, color-mix(in oklch, var(--red) 22%, transparent), transparent 70%);
+  }
+  .top { display: flex; align-items: center; gap: 14px; font-size: 30px; font-weight: 750; }
+  .top span { color: var(--ink-3); font-weight: 500; }
+  h1 {
+    font-size: 230px; font-weight: 800; font-stretch: 75%; line-height: 0.8; letter-spacing: -0.005em;
+    text-shadow: 7px 7px 0 var(--gold);
+  }
+  h1 span { color: var(--red); }
+  .sub { font-size: 36px; font-weight: 500; max-width: 32ch; line-height: 1.2; }
+  .meta { font-family: var(--font-mono); font-size: 22px; color: var(--ink-3); }
+  .lamp {
+    position: absolute; right: 72px; top: 52px;
+    padding: 12px 22px; border-radius: 12px;
+    background: var(--red); color: white;
+    font-weight: 800; font-stretch: 85%; font-size: 22px; letter-spacing: 0.22em; text-transform: uppercase;
+    box-shadow: 0 0 40px color-mix(in oklch, var(--red) 60%, transparent);
+  }
+</style>
