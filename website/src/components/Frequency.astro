@@ -47,7 +47,15 @@ const levels: { id: Level; label: string; blurb: string }[] = [
         ))}
       </div>
 
-      <p class="cmd-hint"><code>/flavour frequency <span data-level-name>rare</span></code></p>
+      <p class="cmd-hint">
+        <code>/flavour frequency <span data-level-name>rare</span></code>
+        {/* The copy handler lives in Command.astro, which this page also renders. */}
+        <button type="button" class="copy-inline" data-copy="/flavour frequency rare" aria-label="Copy: /flavour frequency rare">
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="ic-copy"><rect x="8" y="8" width="12" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="ic-done"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="copied" role="status" aria-live="polite"></span>
+        </button>
+      </p>
     </header>
 
     <ol class="transcript" role="list" aria-label="Eight example replies">
@@ -101,7 +109,22 @@ const levels: { id: Level; label: string; blurb: string }[] = [
   .level-name { font-weight: 750; }
   .level-blurb { color: var(--ink-2); font-size: 0.92rem; }
 
-  .cmd-hint { font-size: 0.9rem; color: var(--ink-3); }
+  .cmd-hint { display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; color: var(--ink-3); }
+  .copy-inline {
+    position: relative;
+    display: grid; place-items: center;
+    width: 2.1rem; height: 2.1rem;
+    border: 1px solid var(--rule); border-radius: 8px;
+    background: var(--card); color: var(--ink-3);
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .copy-inline:hover { color: var(--ink); border-color: var(--ink-3); }
+  .copy-inline svg { width: 1rem; height: 1rem; grid-area: 1 / 1; transition: transform 0.25s var(--ease-spring), opacity 0.2s; }
+  .ic-done { opacity: 0; transform: scale(0.4); color: var(--red); }
+  .copy-inline[data-done] .ic-copy { opacity: 0; transform: scale(0.4); }
+  .copy-inline[data-done] .ic-done { opacity: 1; transform: none; }
+  .copied { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .cmd-hint code { background: var(--paper-2); border: 1px solid var(--rule); padding: 0.3rem 0.55rem; border-radius: 7px; color: var(--ink); }
 
   .transcript {
@@ -154,6 +177,7 @@ const levels: { id: Level; label: string; blurb: string }[] = [
     const turns = [...root.querySelectorAll<HTMLElement>('.turn')];
     const tally = root.querySelector('[data-tally]');
     const name = root.querySelector('[data-level-name]');
+    const copy = root.querySelector<HTMLButtonElement>('.copy-inline');
 
     function apply(level: string) {
       let lit = 0;
@@ -165,6 +189,10 @@ const levels: { id: Level; label: string; blurb: string }[] = [
       });
       if (tally) tally.textContent = String(lit);
       if (name) name.textContent = level;
+      if (copy) {
+        copy.dataset.copy = `/flavour frequency ${level}`;
+        copy.setAttribute('aria-label', `Copy: /flavour frequency ${level}`);
+      }
       root!.dataset.level = level;
     }
 
