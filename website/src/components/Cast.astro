@@ -1,5 +1,6 @@
 ---
 import { shows } from '../lib/banks';
+import CopyButton from './CopyButton.astro';
 
 // One accent hue per show, used sparingly.
 const hues: Record<string, number> = {
@@ -15,6 +16,11 @@ const hues: Record<string, number> = {
 const words = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
 const count = words[shows.length] ?? String(shows.length);
 
+// Pre-selected to match the example most people will copy first.
+const DEFAULT = ['b99', 'community'];
+const MAX = 3;
+const initial = `/flavour ${shows.filter((s) => DEFAULT.includes(s.slug)).map((s) => s.slug).join(',')}`;
+
 const cast = shows.map((show) => {
   const lines = show.situations.flatMap((s) => s.lines.map((line) => ({ line, heading: s.heading })));
   const pick = lines.find((l) => l.line.kind === 'quote' && l.line.text.length > 12) ?? lines[0];
@@ -27,13 +33,28 @@ const cast = shows.map((show) => {
     <header class="section-head">
       <p class="eyebrow">The cast</p>
       <h2>{count} shows. Pick up to three.</h2>
-      <p>Brooklyn Nine-Nine is on by default. Mix and match with <code>/flavour b99,community</code>, or bring your own.</p>
+      <p>Select up to three shows below and get your command. Brooklyn Nine-Nine is the default, or bring your own.</p>
     </header>
 
-    <ul class="grid" role="list">
-      {cast.map(({ show, pick, hue }) => (
-        <li class="card" style={`--h:${hue}`}>
-          <div class="card-top">
+    <div class="picker" data-cast data-max={MAX}>
+      <div class="cmd-bar">
+        <code><span class="prompt" aria-hidden="true">›</span><span data-cmd>{initial}</span></code>
+        <span class="counter" aria-live="polite"><span data-count>{DEFAULT.length}</span>/{MAX}</span>
+        <CopyButton value={initial} data-cmd-copy="" />
+      </div>
+      <p class="hint" data-hint aria-live="polite"></p>
+
+      <ul class="grid" role="list" aria-label="Shows">
+        {cast.map(({ show, pick, hue }) => (
+          <li class="card pickable" style={`--h:${hue}`}>
+            <input
+              class="toggle"
+              type="checkbox"
+              value={show.slug}
+              checked={DEFAULT.includes(show.slug)}
+              aria-label={`${show.name} (${show.slug})`}
+            />
+            <div class="card-top">
             <code class="slug">{show.slug}</code>
             {show.slug === 'b99' && <span class="badge">Default</span>}
           </div>
@@ -44,13 +65,16 @@ const cast = shows.map((show) => {
               {pick.line.who && <cite>{pick.line.who}</cite>}
             </blockquote>
           )}
-          <p class="stats">
-            {show.lineCount} lines · {show.situations.length} situations
-          </p>
-        </li>
-      ))}
+            <p class="stats">
+              {show.lineCount} lines · {show.situations.length} situations
+            </p>
+            <span class="check" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </li>
+        ))}
 
-      <li class="card yours">
+        <li class="card yours">
         <div class="yours-text">
           <div class="card-top"><code class="slug">personal</code></div>
           <h3>Your show</h3>
@@ -60,8 +84,9 @@ const cast = shows.map((show) => {
         </div>
         <pre><code><span class="c">## The Wire</span>
 - "All the pieces matter."</code></pre>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -85,7 +110,52 @@ const cast = shows.map((show) => {
   .card::before {
     content: ''; position: absolute; inset: 0 0 auto; height: 5px; background: var(--accent);
   }
-  .card:hover { transform: translateY(-3px) rotate(-0.4deg); box-shadow: var(--shadow); }
+  /* Selectable cards: a full-size invisible checkbox keeps native keyboard,
+     focus and screen reader behaviour without nesting headings in a label. */
+  .pickable { cursor: pointer; transition: transform 0.3s var(--ease-spring), box-shadow 0.3s, border-color 0.2s, opacity 0.2s; }
+  .toggle { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .pickable:hover { transform: translateY(-4px) scale(1.025); box-shadow: var(--shadow); }
+  .pickable:active { transform: scale(0.985); }
+  .pickable:has(.toggle:focus-visible) { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .pickable:has(.toggle:checked) {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent), var(--shadow);
+  }
+  .picker[data-full] .pickable:not(:has(.toggle:checked)) { opacity: 0.55; }
+  .picker[data-full] .pickable:not(:has(.toggle:checked)):hover { opacity: 0.8; }
+  .pickable[data-nope] { animation: nope 0.4s; }
+  @keyframes nope {
+    20%, 60% { translate: -6px 0; }
+    40%, 80% { translate: 6px 0; }
+  }
+
+  .check {
+    position: absolute; right: 1rem; bottom: 1rem;
+    display: grid; place-items: center;
+    width: 1.9rem; height: 1.9rem; border-radius: 50%;
+    background: var(--accent); color: oklch(0.2 0.012 60);
+    opacity: 0; transform: scale(0.3) rotate(-30deg);
+    transition: opacity 0.2s, transform 0.35s var(--ease-spring);
+  }
+  .check svg { width: 1.05rem; height: 1.05rem; }
+  .pickable:has(.toggle:checked) .check { opacity: 1; transform: none; }
+
+  .yours:hover { transform: translateY(-3px) rotate(-0.4deg); box-shadow: var(--shadow); }
+
+  .cmd-bar {
+    display: flex; align-items: center; gap: 0.75rem;
+    max-width: 40rem;
+    background: var(--term); color: var(--term-ink);
+    border-radius: 12px;
+    padding: 0.35rem 0.35rem 0.35rem 1rem;
+    box-shadow: var(--shadow);
+  }
+  .cmd-bar code { flex: 1; min-width: 0; font-size: 0.95rem; overflow-x: auto; white-space: nowrap; scrollbar-width: none; padding-block: 0.5rem; }
+  .cmd-bar .prompt { color: var(--gold); margin-right: 0.6rem; font-weight: 700; }
+  .cmd-bar [data-cmd][data-empty] { color: var(--term-dim); font-style: italic; }
+  .counter { font-family: var(--font-mono); font-size: 0.8rem; color: var(--term-dim); font-variant-numeric: tabular-nums; }
+  .counter span { color: var(--gold); font-weight: 700; }
+  .hint { min-height: 1.4rem; margin: 0.5rem 0 1.25rem; font-size: 0.88rem; color: var(--red-ink); }
 
   .card-top { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
   .slug { font-size: 0.78rem; color: var(--ink-3); overflow-wrap: anywhere; }
@@ -114,3 +184,55 @@ const cast = shows.map((show) => {
   }
   .yours .c { color: var(--term-dim); }
 </style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-cast]');
+  if (root) {
+    const max = Number(root.dataset.max ?? 3);
+    const boxes = [...root.querySelectorAll<HTMLInputElement>('.toggle')];
+    const cmd = root.querySelector<HTMLElement>('[data-cmd]')!;
+    const count = root.querySelector<HTMLElement>('[data-count]')!;
+    const copy = root.querySelector<HTMLButtonElement>('[data-cmd-copy]')!;
+    const hint = root.querySelector<HTMLElement>('[data-hint]')!;
+    let hintTimer: number | undefined;
+
+    function render() {
+      // Card order, not click order, so the command is stable.
+      const picked = boxes.filter((b) => b.checked).map((b) => b.value);
+      const value = picked.length ? `/flavour ${picked.join(',')}` : '';
+      cmd.textContent = value || 'pick at least one show';
+      cmd.toggleAttribute('data-empty', !value);
+      count.textContent = String(picked.length);
+      copy.disabled = !value;
+      copy.dataset.copy = value;
+      copy.setAttribute('aria-label', value ? `Copy: ${value}` : 'Copy command (pick a show first)');
+      root!.toggleAttribute('data-full', picked.length >= max);
+      // The "3 max" hint only makes sense while the selection is full.
+      if (picked.length < max) {
+        clearTimeout(hintTimer);
+        hint.textContent = '';
+      }
+    }
+
+    function nope(card: HTMLElement) {
+      card.removeAttribute('data-nope');
+      void card.offsetWidth;
+      card.dataset.nope = '';
+      hint.textContent = `Up to ${max} shows load at once. Deselect one first.`;
+      clearTimeout(hintTimer);
+      hintTimer = window.setTimeout(() => (hint.textContent = ''), 2800);
+    }
+
+    for (const box of boxes) {
+      box.addEventListener('change', () => {
+        if (box.checked && boxes.filter((b) => b.checked).length > max) {
+          box.checked = false;
+          nope(box.closest<HTMLElement>('.card')!);
+          return;
+        }
+        render();
+      });
+    }
+    render();
+  }
+</script>

@@ -1,4 +1,6 @@
 ---
+import CopyButton from './CopyButton.astro';
+
 // A copyable one-line command.
 interface Props { cmd: string; note?: string; size?: 'md' | 'lg' }
 const { cmd, note, size = 'md' } = Astro.props;
@@ -6,11 +8,7 @@ const { cmd, note, size = 'md' } = Astro.props;
 
 <div class:list={['cmd', size]}>
   <code><span class="prompt" aria-hidden="true">›</span>{cmd}</code>
-  <button type="button" class="copy" data-copy={cmd} aria-label={`Copy: ${cmd}`}>
-    <svg viewBox="0 0 24 24" aria-hidden="true" class="ic-copy"><rect x="8" y="8" width="12" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-    <svg viewBox="0 0 24 24" aria-hidden="true" class="ic-done"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span class="copied" role="status" aria-live="polite"></span>
-  </button>
+  <CopyButton value={cmd} />
   {note && <span class="note">{note}</span>}
 </div>
 
@@ -35,43 +33,9 @@ const { cmd, note, size = 'md' } = Astro.props;
   }
   .lg code { font-size: clamp(0.8rem, 1.15vw, 0.92rem); }
   .prompt { color: var(--gold); margin-right: 0.6rem; font-weight: 700; }
-  .copy {
-    position: relative;
-    display: grid; place-items: center;
-    width: 2.4rem; height: 2.4rem;
-    border: 0; border-radius: 9px;
-    background: oklch(1 0 0 / 0.07);
-    color: var(--term-dim);
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-  }
-  .copy:hover { background: oklch(1 0 0 / 0.14); color: var(--term-ink); }
-  .copy svg { width: 1.1rem; height: 1.1rem; grid-area: 1 / 1; transition: transform 0.25s var(--ease-spring), opacity 0.2s; }
-  .ic-done { opacity: 0; transform: scale(0.4); color: var(--term-green); }
-  .copy[data-done] .ic-copy { opacity: 0; transform: scale(0.4); }
-  .copy[data-done] .ic-done { opacity: 1; transform: none; }
-  .copied { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   @media (max-width: 560px) {
     code, .lg code { white-space: normal; overflow-wrap: anywhere; }
   }
   .note { grid-column: 1 / -1; font-size: 0.8rem; color: var(--term-dim); padding: 0 0 0.45rem; }
 </style>
 
-<script>
-  for (const btn of document.querySelectorAll<HTMLButtonElement>('button[data-copy]')) {
-    btn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(btn.dataset.copy ?? '');
-      } catch {
-        return;
-      }
-      btn.dataset.done = '';
-      const status = btn.querySelector('.copied');
-      if (status) status.textContent = 'Copied';
-      setTimeout(() => {
-        delete btn.dataset.done;
-        if (status) status.textContent = '';
-      }, 1600);
-    });
-  }
-</script>
