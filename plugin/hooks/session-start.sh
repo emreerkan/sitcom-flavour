@@ -4,7 +4,7 @@
 # Config (first match wins):
 #   env  SITCOM_FLAVOUR_SHOWS=b99,the-office   SITCOM_FLAVOUR_FREQUENCY=rare|sometimes|often
 #   file ${CLAUDE_CONFIG_DIR:-~/.claude}/sitcom-flavour.conf   (shows=..., frequency=...)
-#   default shows=b99 frequency=rare
+#   default shows=silicon-valley frequency=rare
 #
 # Personal banks in ${CLAUDE_CONFIG_DIR:-~/.claude}/sitcom-flavour/banks/<slug>.md
 # extend the plugin bank of the same name, or add a new show.
@@ -24,7 +24,7 @@ conf_get() {
 
 shows="${SITCOM_FLAVOUR_SHOWS:-$(conf_get shows)}"
 frequency="${SITCOM_FLAVOUR_FREQUENCY:-$(conf_get frequency)}"
-shows="${shows:-b99}"
+shows="${shows:-silicon-valley}"
 frequency="${frequency:-rare}"
 
 available=$(

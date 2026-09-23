@@ -18,7 +18,7 @@ frequency=rare
 
 Handle the arguments like this:
 
-- **empty or `status`**: read the config file and report the active shows and frequency. If the file doesn't exist, the defaults are `shows=b99` and `frequency=rare`.
+- **empty or `status`**: read the config file and report the active shows and frequency. If the file doesn't exist, the defaults are `shows=silicon-valley` and `frequency=rare`.
 - **`list`**: list the available shows.
 - **`off`**: set `shows=off`.
 - **`frequency <level>`**: set `frequency` to `rare`, `sometimes` or `often`. Reject any other value.

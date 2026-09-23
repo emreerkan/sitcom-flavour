@@ -8,13 +8,17 @@ It never shows up in code, comments, commits, PRs or docs, and it stays quiet du
 
 | Slug | Show |
 |---|---|
+| `silicon-valley` | Silicon Valley |
 | `b99` | Brooklyn Nine-Nine |
 | `the-office` | The Office (US) |
 | `parks-and-rec` | Parks and Recreation |
 | `community` | Community |
 | `arrested-development` | Arrested Development |
-| `silicon-valley` | Silicon Valley |
 | `seinfeld` | Seinfeld |
+| `himym` | How I Met Your Mother |
+| `friends` | Friends |
+| `it-crowd` | The IT Crowd |
+| `good-place` | The Good Place |
 
 ## Install
 
@@ -23,15 +27,15 @@ It never shows up in code, comments, commits, PRs or docs, and it stays quiet du
 /plugin install sitcom-flavour@sitcom-flavour
 ```
 
-Start a new session. Brooklyn Nine-Nine is on by default.
+Start a new session. Silicon Valley is on by default.
 
 ## Configure
 
 ```
-/flavour                       # status
-/flavour list                  # available shows
-/flavour b99,community         # up to 3 shows
-/flavour frequency sometimes   # rare | sometimes | often
+/flavour                           # status
+/flavour list                      # available shows
+/flavour silicon-valley,community  # up to 3 shows
+/flavour frequency sometimes       # rare | sometimes | often
 /flavour off
 ```
 
@@ -40,7 +44,7 @@ If another plugin also defines `/flavour`, use the full name `/sitcom-flavour:fl
 Settings are saved in `~/.claude/sitcom-flavour.conf`:
 
 ```
-shows=b99,community
+shows=silicon-valley,b99,community
 frequency=rare
 ```
 

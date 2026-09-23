@@ -11,7 +11,7 @@ run() { bash hooks/session-start.sh; }
 ctx() { run | python3 -c 'import json,sys; print(json.load(sys.stdin)["hookSpecificOutput"]["additionalContext"])'; }
 check() { if eval "$2"; then echo "ok   $1"; else echo "FAIL $1"; fail=1; fi; }
 
-check "default loads b99"              '[[ "$(ctx)" == *"Active shows: b99."* ]]'
+check "default loads silicon-valley"   '[[ "$(ctx)" == *"Active shows: silicon-valley."* ]]'
 check "output is valid JSON"           'run | python3 -m json.tool >/dev/null'
 for f in banks/*.md; do s=$(basename "$f" .md)
   check "bank $s loads"                "SITCOM_FLAVOUR_SHOWS=$s ctx | grep -q \"Active shows: $s.\""
@@ -30,5 +30,5 @@ printf '### Extra\n- "personal-line-xyz"\n' > "$CLAUDE_CONFIG_DIR/sitcom-flavour
 printf '## Mine\n- "my-show-line"\n' > "$CLAUDE_CONFIG_DIR/sitcom-flavour/banks/my-show.md"
 check "personal bank extends plugin bank" '[[ "$(SITCOM_FLAVOUR_SHOWS=b99 ctx)" == *"Noice"*"personal-line-xyz"* ]]'
 check "personal-only show loads"       '[[ "$(SITCOM_FLAVOUR_SHOWS=my-show ctx)" == *"Active shows: my-show."*"my-show-line"* ]]'
-check "personal show is listed"        '[[ "$(ctx)" == *"Available shows: arrested-development, b99, community, my-show,"* ]]'
+check "personal show is listed"        '[[ "$(ctx)" == *"Available shows: arrested-development, b99, community, friends, good-place, himym, it-crowd, my-show,"* ]]'
 exit $fail

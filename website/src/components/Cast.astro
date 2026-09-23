@@ -4,20 +4,24 @@ import CopyButton from './CopyButton.astro';
 
 // One accent hue per show, used sparingly.
 const hues: Record<string, number> = {
+  'silicon-valley': 195,
   b99: 85,
   'the-office': 250,
   'parks-and-rec': 150,
   community: 45,
   'arrested-development': 105,
-  'silicon-valley': 195,
   seinfeld: 300,
+  himym: 25,
+  friends: 275,
+  'it-crowd': 340,
+  'good-place': 170,
 };
 
 const words = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
 const count = words[shows.length] ?? String(shows.length);
 
 // Pre-selected to match the example most people will copy first.
-const DEFAULT = ['b99', 'community'];
+const DEFAULT = ['silicon-valley', 'b99', 'community'];
 const MAX = 3;
 const initial = `/flavour ${shows.filter((s) => DEFAULT.includes(s.slug)).map((s) => s.slug).join(',')}`;
 
@@ -33,7 +37,7 @@ const cast = shows.map((show) => {
     <header class="section-head">
       <p class="eyebrow">The cast</p>
       <h2>{count} shows. Pick up to three.</h2>
-      <p>Select up to three shows below and get your command. Brooklyn Nine-Nine is the default, or bring your own.</p>
+      <p>Select up to three shows below and get your command. Silicon Valley is the default, or bring your own.</p>
     </header>
 
     <div class="picker" data-cast data-max={MAX}>
@@ -56,7 +60,7 @@ const cast = shows.map((show) => {
             />
             <div class="card-top">
             <code class="slug">{show.slug}</code>
-            {show.slug === 'b99' && <span class="badge">Default</span>}
+            {show.slug === 'silicon-valley' && <span class="badge">Default</span>}
           </div>
           <h3>{show.name}</h3>
           {pick && (
