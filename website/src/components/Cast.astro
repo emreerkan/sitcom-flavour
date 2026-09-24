@@ -45,10 +45,16 @@ const cast = shows.map((show) => {
     </header>
 
     <div class="picker" data-cast data-max={MAX}>
+      <div class="bar-row">
       <div class="cmd-bar">
         <code><span class="prompt" aria-hidden="true">›</span><span data-cmd>{initial}</span></code>
         <span class="counter" aria-live="polite"><span data-count>{DEFAULT.length}</span>/{MAX}</span>
         <CopyButton value={initial} data-cmd-copy="" />
+      </div>
+        <button type="button" class="clear" data-clear>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          Clear
+        </button>
       </div>
       <p class="hint" data-hint aria-live="polite"></p>
 
@@ -150,8 +156,23 @@ const cast = shows.map((show) => {
 
   .yours:hover { transform: translateY(-3px) rotate(-0.4deg); box-shadow: var(--shadow); }
 
+  .bar-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .clear {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.55rem 0.95rem;
+    border: 1px solid var(--rule); border-radius: 999px;
+    background: var(--card); color: var(--ink-2);
+    font-family: var(--font-display); font-size: 0.9rem; font-weight: 650;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, opacity 0.2s;
+  }
+  .clear svg { width: 0.95rem; height: 0.95rem; }
+  .clear:hover:not(:disabled) { color: var(--ink); border-color: var(--ink-3); }
+  .clear:disabled { opacity: 0.4; cursor: not-allowed; }
+
   .cmd-bar {
     display: flex; align-items: center; gap: 0.75rem;
+    flex: 1; min-width: 0;
     max-width: 40rem;
     background: var(--term); color: var(--term-ink);
     border-radius: 12px;
@@ -202,6 +223,7 @@ const cast = shows.map((show) => {
     const count = root.querySelector<HTMLElement>('[data-count]')!;
     const copy = root.querySelector<HTMLButtonElement>('[data-cmd-copy]')!;
     const hint = root.querySelector<HTMLElement>('[data-hint]')!;
+    const clear = root.querySelector<HTMLButtonElement>('[data-clear]')!;
     let hintTimer: number | undefined;
 
     function render() {
@@ -212,6 +234,7 @@ const cast = shows.map((show) => {
       cmd.toggleAttribute('data-empty', !value);
       count.textContent = String(picked.length);
       copy.disabled = !value;
+      clear.disabled = !picked.length;
       copy.dataset.copy = value;
       copy.setAttribute('aria-label', value ? `Copy: ${value}` : 'Copy command (pick a show first)');
       root!.toggleAttribute('data-full', picked.length >= max);
@@ -230,6 +253,11 @@ const cast = shows.map((show) => {
       clearTimeout(hintTimer);
       hintTimer = window.setTimeout(() => (hint.textContent = ''), 2800);
     }
+
+    clear.addEventListener('click', () => {
+      for (const box of boxes) box.checked = false;
+      render();
+    });
 
     for (const box of boxes) {
       box.addEventListener('change', () => {
