@@ -1,0 +1,96 @@
+---
+// An easter egg behind the hero credit. Type only, no imagery.
+---
+
+<dialog class="memorial" data-memorial aria-labelledby="memorial-name">
+  <div class="inner">
+    <span class="sign" aria-hidden="true">Applause</span>
+
+    <p class="eyebrow">In memory</p>
+    <h2 id="memorial-name">Andre Braugher</h2>
+    <p class="years">1962 &ndash; 2023</p>
+
+    <p class="role">Captain Raymond Holt, Brooklyn Nine-Nine</p>
+
+    <blockquote>
+      <p>&ldquo;Hot damn!&rdquo;</p>
+    </blockquote>
+
+    <p class="body">
+      Two words, a face that gives away nothing, and the whole room falls over. The headline on this page is his, and
+      his show was the first bank this plugin ever had.
+    </p>
+
+    <button type="button" class="close" data-memorial-close>Close</button>
+  </div>
+</dialog>
+
+<style>
+  .memorial {
+    margin: auto;
+    width: min(100% - 2rem, 30rem);
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: var(--shadow), 0 40px 90px -50px oklch(0 0 0 / 0.55);
+  }
+  .memorial::backdrop { background: oklch(0.2 0.02 60 / 0.5); backdrop-filter: blur(3px); }
+  .memorial[open] { animation: rise 0.35s var(--ease-out); }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+
+  .inner { padding: clamp(1.75rem, 4vw, 2.5rem); text-align: center; }
+
+  .sign {
+    display: inline-block; margin-bottom: 1.5rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px;
+    background: var(--red); color: white;
+    font-weight: 800; font-stretch: 85%; font-size: 0.8rem;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    box-shadow: 0 0 30px color-mix(in oklch, var(--red) 55%, transparent);
+  }
+
+  .eyebrow { font-family: var(--font-script); font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  h2 { font-size: clamp(2rem, 6vw, 2.75rem); font-weight: 800; font-stretch: 80%; margin-top: 0.35rem; }
+  .years { font-family: var(--font-mono); font-size: 1rem; color: var(--ink-2); margin-top: 0.4rem; }
+  .role {
+    margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px dashed var(--rule);
+    font-family: var(--font-script); text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.95rem;
+  }
+
+  blockquote { margin-top: 1.5rem; }
+  blockquote p {
+    font-family: var(--font-display); font-weight: 800; font-stretch: 78%;
+    font-size: clamp(2.5rem, 9vw, 3.75rem); line-height: 1;
+    text-shadow: 0.035em 0.035em 0 var(--gold);
+  }
+
+  .body { margin-top: 1.5rem; color: var(--ink-2); font-size: 0.98rem; text-wrap: pretty; }
+
+  .close {
+    margin-top: 1.75rem;
+    padding: 0.6rem 1.4rem;
+    border: 2px solid var(--ink); border-radius: 999px;
+    background: transparent; color: var(--ink);
+    font-family: var(--font-display); font-weight: 700; font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .close:hover { background: var(--ink); color: var(--paper); }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-memorial]');
+
+  if (dialog) {
+    for (const trigger of document.querySelectorAll<HTMLElement>('[data-memorial-open]')) {
+      trigger.addEventListener('click', () => dialog.showModal());
+    }
+    dialog.querySelector('[data-memorial-close]')?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+  }
+</script>
