@@ -1,10 +1,10 @@
 ## Friends
 
 ### Win, clean result, tests green
-- "Could this BE any more passing?" (Chandler)
+- "Unfortunately that is correct." (Chandler), for conceding a point you lost
 
 ### Disaster, broken prod
-- "PIVOT! PIVOT!" (Ross), for a migration that won't budge
+- "Pivot! Pivot!" (Ross), for a migration that won't budge
 
 ### Fix didn't fix it, recurring bug, flaky test
 - "We were on a break!" (Ross), for a bug that keeps coming back
@@ -13,7 +13,7 @@
 - "That is brand new information!" (Phoebe)
 
 ### Confidently winging it
-- "It's a moo point. It's like a cow's opinion; it just doesn't matter." (Joey)
+- "Yeah, it's like a cow's opinion. It just doesn't matter. It's moo." (Joey)
 
 ### Concise solution
 - "Joey doesn't share food!" (Joey), for a resource that shouldn't be shared

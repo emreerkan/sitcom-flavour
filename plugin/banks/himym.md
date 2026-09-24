@@ -6,22 +6,20 @@
 - "Challenge accepted." (Barney)
 
 ### Disaster, broken prod
-- "Nothing good happens after 2 AM." (Ted), for a late-night deploy gone wrong
-
-### Fix didn't fix it, recurring bug, flaky test
-- "The bride won't come downstairs." (Marshall)
+- "Nothing good ever happens after 2:00 a.m." (Lily), for a late-night deploy gone wrong
 
 ### Bad practice with a good excuse
 - "New is always better." (Barney)
 
 ### Vague request or plan
-- "I have a plan. I just haven't thought of it yet." (Barney)
+- "You see the Universe has a plan kids; and that plan is always in motion." (Ted)
 
 ### Long explanation coming
-- "Kids, let me tell you the story of…" (Ted)
+- "Kids, I'm gonna tell you an incredible story, the story of how I met your mother." (Ted)
 
 ### Regret, rollback needed
-- *puts on Sensory Deprivation 5000 helmet* (Barney), for blocking out the damage
+- *wears the Sensory Deprivator 5000 to block out the damage* (Barney)
+- "When I get sad, I stop being sad, and be AWESOME instead. True story." (Barney)
 
 ### Clever algorithm
-- "Have you met Ted?" (Barney), for handing off to the right tool
+- "Hi, have you met Ted?" (Barney), for handing off to the right tool

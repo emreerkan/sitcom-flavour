@@ -30,5 +30,10 @@ printf '### Extra\n- "personal-line-xyz"\n' > "$CLAUDE_CONFIG_DIR/sitcom-flavour
 printf '## Mine\n- "my-show-line"\n' > "$CLAUDE_CONFIG_DIR/sitcom-flavour/banks/my-show.md"
 check "personal bank extends plugin bank" '[[ "$(SITCOM_FLAVOUR_SHOWS=b99 ctx)" == *"Noice"*"personal-line-xyz"* ]]'
 check "personal-only show loads"       '[[ "$(SITCOM_FLAVOUR_SHOWS=my-show ctx)" == *"Active shows: my-show."*"my-show-line"* ]]'
-check "personal show is listed"        '[[ "$(ctx)" == *"Available shows: arrested-development, b99, community, friends, good-place, himym, it-crowd, my-show,"* ]]'
+# Every bundled bank plus the personal-only show must appear in the list.
+expected=$(for f in banks/*.md; do basename "$f" .md; done; echo my-show)
+listed=$(ctx | sed -n 's/.*Available shows: \([^.]*\)\..*/\1/p' | tr -d ' ')
+for slug in $expected; do
+  check "listed: $slug" "[[ \",$listed,\" == *\",$slug,\"* ]]"
+done
 exit $fail

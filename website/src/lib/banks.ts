@@ -59,7 +59,7 @@ function parseBank(slug: string, source: string): Show {
   return { slug, name, situations, lineCount };
 }
 
-const ORDER = ['silicon-valley', 'b99', 'the-office', 'parks-and-rec', 'community', 'arrested-development', 'seinfeld', 'himym', 'friends', 'it-crowd', 'good-place'];
+const ORDER = ['silicon-valley', 'b99', 'the-office', 'parks-and-rec', 'community', 'arrested-development', 'seinfeld', 'himym', 'friends', 'it-crowd', 'good-place', 'big-bang-theory', 'young-sheldon', 'ted-lasso', 'always-sunny'];
 const rank = (slug: string) => (ORDER.indexOf(slug) + 1 || ORDER.length + 1);
 
 export const shows: Show[] = Object.entries(files)
