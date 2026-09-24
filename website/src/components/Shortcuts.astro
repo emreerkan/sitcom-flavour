@@ -104,14 +104,35 @@ const act = keys.filter((k) => k.group === 'do');
 
   if (dialog) {
     const click = (selector: string) => document.querySelector<HTMLElement>(selector)?.click();
-    const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ block: 'start' });
+
+    // Where the keyboard should land in each section, so you don't have to tab
+    // through everything above it. `preventScroll` keeps the section's own
+    // scroll position instead of jumping to the focused control.
+    const entry: Record<string, string> = {
+      situations: '[role="tab"][aria-selected="true"]',
+      frequency: 'input[name="freq"]:checked',
+      cast: '.toggle',
+      install: 'button[data-copy]',
+    };
+
+    function scrollTo(id: string) {
+      const section = document.getElementById(id);
+      if (!section) return;
+      section.scrollIntoView({ block: 'start' });
+      const target = entry[id] ? section.querySelector<HTMLElement>(entry[id]) : null;
+      target?.focus({ preventScroll: true });
+    }
 
     const actions: Record<string, () => void> = {
       s: () => scrollTo('situations'),
       f: () => scrollTo('frequency'),
       c: () => scrollTo('cast'),
       i: () => scrollTo('install'),
-      t: () => window.scrollTo({ top: 0 }),
+      t: () => {
+        window.scrollTo({ top: 0 });
+        // Drop focus so the next Tab starts from the top of the page.
+        (document.activeElement as HTMLElement | null)?.blur();
+      },
       g: () => window.open('https://github.com/emreerkan/sitcom-flavour', '_blank', 'noopener'),
       m: () => click('[data-theme-toggle]'),
       a: () => click('[data-applause]'),
@@ -119,10 +140,15 @@ const act = keys.filter((k) => k.group === 'do');
       h: () => (dialog.open ? dialog.close() : dialog.showModal()),
     };
 
+    // Only text entry swallows the shortcuts. Checkboxes and radios are how the
+    // page's own controls work, so keys must keep firing while they hold focus.
+    const TYPED = new Set(['text', 'search', 'email', 'url', 'tel', 'password', 'number', 'date', 'datetime-local', 'month', 'week', 'time']);
+
     function typing(target: EventTarget | null) {
       const el = target as HTMLElement | null;
       if (!el) return false;
-      return el.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName);
+      if (el.isContentEditable || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') return true;
+      return el.tagName === 'INPUT' && TYPED.has((el as HTMLInputElement).type);
     }
 
     document.addEventListener('keydown', (e) => {
