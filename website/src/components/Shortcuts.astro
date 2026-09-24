@@ -1,0 +1,153 @@
+---
+// Single-key shortcuts plus the help dialog that documents them.
+const keys: { key: string; label: string; group: 'go' | 'do' }[] = [
+  { key: 's', label: 'Situations', group: 'go' },
+  { key: 'f', label: 'Frequency', group: 'go' },
+  { key: 'c', label: 'Cast', group: 'go' },
+  { key: 'i', label: 'Install', group: 'go' },
+  { key: 'g', label: 'GitHub repository', group: 'go' },
+  { key: 't', label: 'Back to top', group: 'go' },
+  { key: 'm', label: 'Light / dark mode', group: 'do' },
+  { key: 'a', label: 'Applause', group: 'do' },
+  { key: 'b', label: 'Ba-dum tss', group: 'do' },
+  { key: 'h', label: 'This help', group: 'do' },
+];
+
+const go = keys.filter((k) => k.group === 'go');
+const act = keys.filter((k) => k.group === 'do');
+---
+
+<dialog class="help" data-help aria-labelledby="help-title">
+  <div class="inner">
+    <header>
+      <h2 id="help-title">Keyboard shortcuts</h2>
+      <button type="button" class="close" data-help-close aria-label="Close">✕</button>
+    </header>
+
+    <div class="cols">
+      <section>
+        <h3>Go to</h3>
+        <ul role="list">
+          {go.map((k) => (
+            <li><kbd>{k.key}</kbd><span>{k.label}</span></li>
+          ))}
+        </ul>
+      </section>
+      <section>
+        <h3>Do</h3>
+        <ul role="list">
+          {act.map((k) => (
+            <li><kbd>{k.key}</kbd><span>{k.label}</span></li>
+          ))}
+        </ul>
+      </section>
+    </div>
+
+    <p class="foot">Press <kbd>Esc</kbd> to close. Shortcuts are off while you're typing.</p>
+  </div>
+</dialog>
+
+<style>
+  .help {
+    width: min(100% - 2rem, 34rem);
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: var(--shadow), 0 40px 90px -50px oklch(0 0 0 / 0.55);
+  }
+  .help::backdrop { background: oklch(0.2 0.02 60 / 0.45); backdrop-filter: blur(3px); }
+  .help[open] { animation: pop 0.25s var(--ease-spring); }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(0.97); } }
+
+  .inner { padding: clamp(1.25rem, 3vw, 1.75rem); }
+  header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
+  h2 { font-size: 1.5rem; font-weight: 800; font-stretch: 84%; }
+  .close {
+    width: 2.2rem; height: 2.2rem; flex: none;
+    border: 1px solid var(--rule); border-radius: 8px;
+    background: transparent; color: var(--ink-2);
+    font-size: 0.95rem; cursor: pointer;
+  }
+  .close:hover { color: var(--ink); border-color: var(--ink-3); }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  h3 {
+    font-size: 0.72rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--red-ink); margin-bottom: 0.75rem;
+  }
+  ul { display: grid; gap: 0.5rem; }
+  li { display: flex; align-items: center; gap: 0.7rem; font-size: 0.95rem; color: var(--ink-2); }
+
+  kbd {
+    display: grid; place-items: center;
+    min-width: 1.75rem; height: 1.75rem; padding: 0 0.4rem;
+    border: 1px solid var(--rule); border-bottom-width: 3px; border-radius: 7px;
+    background: var(--paper-2); color: var(--ink);
+    font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700;
+  }
+
+  .foot {
+    margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed var(--rule);
+    font-size: 0.85rem; color: var(--ink-3);
+    display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;
+  }
+  .foot kbd { min-width: 2.4rem; height: 1.5rem; font-size: 0.75rem; }
+
+  @media (max-width: 520px) { .cols { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-help]');
+
+  if (dialog) {
+    const click = (selector: string) => document.querySelector<HTMLElement>(selector)?.click();
+    const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ block: 'start' });
+
+    const actions: Record<string, () => void> = {
+      s: () => scrollTo('situations'),
+      f: () => scrollTo('frequency'),
+      c: () => scrollTo('cast'),
+      i: () => scrollTo('install'),
+      t: () => window.scrollTo({ top: 0 }),
+      g: () => window.open('https://github.com/emreerkan/sitcom-flavour', '_blank', 'noopener'),
+      m: () => click('[data-theme-toggle]'),
+      a: () => click('[data-applause]'),
+      b: () => click('[data-rimshot]'),
+      h: () => (dialog.open ? dialog.close() : dialog.showModal()),
+    };
+
+    function typing(target: EventTarget | null) {
+      const el = target as HTMLElement | null;
+      if (!el) return false;
+      return el.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey || typing(e.target)) return;
+      // "?" is the other conventional way to ask for help.
+      const key = e.key === '?' ? 'h' : e.key.toLowerCase();
+      const action = actions[key];
+      if (!action) return;
+      // Inside the dialog, only the help toggle should still fire.
+      if (dialog.open && key !== 'h') return;
+      e.preventDefault();
+      if (dialog.open && key === 'h') {
+        dialog.close();
+        return;
+      }
+      action();
+    });
+
+    dialog.querySelector('[data-help-close]')?.addEventListener('click', () => dialog.close());
+    // Clicking the backdrop (outside .inner) closes it too.
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    for (const btn of document.querySelectorAll<HTMLElement>('[data-help-open]')) {
+      btn.addEventListener('click', () => dialog.showModal());
+    }
+  }
+</script>

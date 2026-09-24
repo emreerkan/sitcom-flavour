@@ -21,6 +21,9 @@ const year = new Date().getFullYear();
         <a href="https://claude.ai/">Claude</a>. Source on{" "}
         <a href="https://github.com/emreerkan/sitcom-flavour">GitHub</a>.
       </p>
+      <p class="keys">
+        <button type="button" data-help-open>Press <kbd>h</kbd> for keyboard shortcuts</button>
+      </p>
       <p class="legal">
         Quotes are short excerpts used for commentary and belong to their rights holders. Not affiliated with any
         network, studio or show, or with Anthropic. © {year}
@@ -56,10 +59,24 @@ const year = new Date().getFullYear();
     font-size: 0.9rem; color: var(--ink-2);
   }
   .brand { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 750; color: var(--ink); text-decoration: none; }
+  .keys { grid-column: 2; }
+  .keys button {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0; border: 0; background: none;
+    color: var(--ink-2); font-size: 0.85rem; cursor: pointer;
+  }
+  .keys button:hover { color: var(--ink); }
+  .keys kbd {
+    display: inline-grid; place-items: center;
+    min-width: 1.4rem; height: 1.4rem; padding: 0 0.3rem;
+    border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 6px;
+    background: var(--paper-2); color: var(--ink);
+    font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
+  }
   .legal { grid-column: 2; font-size: 0.8rem; color: var(--ink-3); }
   @media (max-width: 640px) {
     .bottom { grid-template-columns: 1fr; }
-    .legal { grid-column: auto; }
+    .legal, .keys { grid-column: auto; }
   }
 </style>
 
