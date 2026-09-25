@@ -19,6 +19,10 @@ It never shows up in code, comments, commits, PRs or docs, and it stays quiet du
 | `friends` | Friends |
 | `it-crowd` | The IT Crowd |
 | `good-place` | The Good Place |
+| `big-bang-theory` | The Big Bang Theory |
+| `young-sheldon` | Young Sheldon |
+| `ted-lasso` | Ted Lasso |
+| `always-sunny` | It's Always Sunny in Philadelphia |
 
 ## Install
 
@@ -28,6 +32,20 @@ It never shows up in code, comments, commits, PRs or docs, and it stays quiet du
 ```
 
 Start a new session. Silicon Valley is on by default.
+
+## Update
+
+```
+/plugin marketplace update sitcom-flavour
+/plugin update sitcom-flavour@sitcom-flavour
+```
+
+Restart Claude Code to apply. The same thing from a shell:
+
+```
+claude plugin marketplace update sitcom-flavour
+claude plugin update sitcom-flavour@sitcom-flavour
+```
 
 ## Configure
 
@@ -41,7 +59,7 @@ Start a new session. Silicon Valley is on by default.
 
 If another plugin also defines `/flavour`, use the full name `/sitcom-flavour:flavour`.
 
-Settings are saved in `~/.claude/sitcom-flavour.conf`:
+Settings are saved in `~/.claude/sitcom-flavour.conf`. A file with three shows selected looks like this:
 
 ```
 shows=silicon-valley,b99,community
@@ -58,7 +76,7 @@ Put your own lines in `~/.claude/sitcom-flavour/banks/<show>.md`, using the same
 
 A `SessionStart` hook reads the config and injects the selected banks as context at startup, on resume, on `/clear` and after compaction. There's no MCP server and no network access. It needs only bash.
 
-At most 3 shows load at once, so the token cost stays small (roughly 300–500 tokens per show).
+At most 3 shows load at once, so the token cost stays small. A bank runs 150–400 tokens, around 250 on average.
 
 ## Website
 
