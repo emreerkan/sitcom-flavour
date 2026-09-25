@@ -6,7 +6,7 @@
 - "Challenge accepted." (Barney)
 
 ### Disaster, broken prod
-- "Nothing good ever happens after 2:00 a.m." (Lily), for a late-night deploy gone wrong
+- "Nothing good ever happens after 2:00 a.m." (Lily)
 
 ### Bad practice with a good excuse
 - "New is always better." (Barney)
@@ -22,4 +22,4 @@
 - "When I get sad, I stop being sad, and be AWESOME instead. True story." (Barney)
 
 ### Clever algorithm
-- "Hi, have you met Ted?" (Barney), for handing off to the right tool
+- "Hi, have you met Ted?" (Barney)

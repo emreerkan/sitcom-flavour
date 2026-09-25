@@ -1,7 +1,7 @@
 ## Silicon Valley
 
 ### Win, clean result, tests green
-- "Tres commas!" (Russ), for a big number going the right way
+- "Tres commas!" (Russ)
 
 ### Overhyped tool or startup
 - "Making the world a better place."

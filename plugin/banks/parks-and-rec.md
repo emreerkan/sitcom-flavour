@@ -11,10 +11,10 @@
 - "I have no idea what I'm doing, but I know I'm doing it really, really well." (Andy)
 
 ### Overengineering, scope creep
-- *The Cones of Dunshire* (Ben), for a system only its author understands
+- *The Cones of Dunshire* (Ben)
 
 ### Overhyped tool or startup
-- *Entertainment 720* (Tom), for a big pitch with no substance
+- *Entertainment 720* (Tom)
 
 ### Giving up on tooling
 - *throws the computer in a dumpster* (Ron)

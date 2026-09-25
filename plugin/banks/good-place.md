@@ -10,16 +10,16 @@
 - *the "Welcome! Everything is fine." sign, still up*
 
 ### Regret, rollback needed
-- "Ya basic." (Eleanor), for reverting to a simpler approach
+- "Ya basic." (Eleanor)
 
 ### Every instinct was wrong, invert the approach
-- "The real question, Eleanor… is what do we owe to each other?" (Michael), for rethinking the design
+- "The real question, Eleanor… is what do we owe to each other?" (Michael)
 
 ### Long explanation coming
 - *starts a trolley problem* (Chidi)
 
 ### Overengineering, scope creep
-- *resets the timeline* (Michael), for a system that keeps getting redesigned
+- *resets the timeline* (Michael)
 
 ### Can't decide, analysis paralysis
 - "I feel fine! I DO have a stomachache. Why do I ALWAYS have a stomachache?" (Chidi)

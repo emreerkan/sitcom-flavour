@@ -14,10 +14,10 @@
 - "The thing about Arsenal is, they always try and walk it in!" (Moss)
 
 ### Absurd situation
-- "There was a fire… at a Sea Parks?" (Roy), for a scenario that defies explanation
+- "There was a fire… at a Sea Parks?" (Roy)
 
 ### Botched a simple thing
 - "Ow. Four! I mean, five! I mean, fire!" (Moss)
 
 ### Small nice-to-have
-- "Leg disabled." (Roy), for a minor limitation you can work around
+- "Leg disabled." (Roy)

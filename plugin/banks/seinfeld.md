@@ -38,4 +38,4 @@
 - "The sea was angry that day, my friends." (George)
 
 ### The right fix, too late
-- "The jerk store called, and they're running out of you!" (George), for a comeback that arrives after the meeting
+- "The jerk store called, and they're running out of you!" (George)

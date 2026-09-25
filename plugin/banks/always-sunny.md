@@ -1,7 +1,7 @@
 ## It's Always Sunny in Philadelphia
 
 ### Wrong claim, misdiagnosis
-- "There is no Pepe Silvia. The man does not exist, okay?" (Charlie), for a bug traced back to something that was never there
+- "There is no Pepe Silvia. The man does not exist, okay?" (Charlie)
 
 ### Vague request or plan
 - "Look, it is a great plan, okay? We do not have a ton of time to explain it to you, we're busy." (Dennis)
@@ -27,7 +27,7 @@
 - *covers a whole wall in mail and string to connect it all* (Charlie)
 
 ### Concise solution
-- "Actually, they're pretty simple. The forms are all standard boiler-plate." (the Lawyer), when the thing someone called complex is boilerplate
+- "Actually, they're pretty simple. The forms are all standard boiler-plate." (the Lawyer)
 
 ### Unseen work that keeps things running
 - "A day that I pride myself on, a day that I've never failed on, and I don't plan to begin failing now!" (Charlie)

@@ -1,7 +1,7 @@
 {
   "name": "sitcom-flavour",
   "description": "Seasons Claude's replies with situation-matched sitcom lines. Silicon Valley, Brooklyn Nine-Nine, The Office, Parks and Rec, Community, Arrested Development, Seinfeld, How I Met Your Mother, Friends, The IT Crowd, The Good Place, The Big Bang Theory, Young Sheldon, Ted Lasso, It's Always Sunny in Philadelphia.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": {
     "name": "Emre Erkan"
   },
