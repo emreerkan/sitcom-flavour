@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="sitcom-flavour">
+  <rect width="512" height="512" rx="112" fill="#1a1511"/>
+  <path d="M96 88h320a64 64 0 0 1 64 64v208a64 64 0 0 1-64 64H224l-104 83.2c-10.56 8.48-24 .96-24-12.48V424a64 64 0 0 1-64-64V152a64 64 0 0 1 64-64Z" fill="#e23726"/>
+  <rect x="227.2" y="160" width="57.6" height="144" rx="28.8" fill="#f3ba25"/>
+  <circle cx="256" cy="353.6" r="32" fill="#f3ba25"/>
+</svg>
