@@ -1,19 +1,22 @@
 {
   "name": "sitcom-flavour",
-  "description": "Seasons Claude's replies with situation-matched sitcom lines. Silicon Valley, Brooklyn Nine-Nine, The Office, Parks and Rec, Community, Arrested Development, Seinfeld, How I Met Your Mother, Friends, The IT Crowd, The Good Place, The Big Bang Theory, Young Sheldon, Ted Lasso, It's Always Sunny in Philadelphia.",
-  "version": "0.3.2",
+  "description": "Drops a situation-matched sitcom line into Claude's replies, and never into your code.",
+  "version": "0.3.3",
   "icon": "./icon.svg",
   "author": {
     "name": "Emre Erkan"
   },
-  "homepage": "https://github.com/emreerkan/sitcom-flavour",
+  "homepage": "https://ada.tools/sitcom-flavour/",
   "repository": "https://github.com/emreerkan/sitcom-flavour",
   "license": "MIT",
   "keywords": [
+    "sitcom",
+    "comedy",
+    "humor",
     "fun",
     "personality",
-    "sitcom",
     "quotes",
-    "flavour"
+    "tone",
+    "session-start"
   ]
 }
